@@ -5,15 +5,20 @@ import App from './App.jsx'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
-import ProblemSet from './components/ProblemSet/ProblemSet.jsx'
+import Register from './components/Register/Register.jsx'
+import Enter from './components/Enter/Enter.jsx'
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    <>
     <Route path='/' element={<Layout/>}>
       <Route path='' element={<Home/>}/>
-      <Route path='problemSet' element={<ProblemSet/>}/>
     </Route>
+    <Route path='/register' element={<Register/>}/>
+    <Route path='/enter' element={<Enter/>}/> 
+    </>
+    
   )
 )
 

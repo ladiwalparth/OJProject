@@ -11,9 +11,9 @@ const Header = () => {
         >
           <img src={weblogo} alt="Website Logo" className="border border-black h-full w-full col-span-2" /></Link>
         <div className="col-start-8 col-span-2 flex items-center justify-end">
-          <Link to='/problemSet' className='text-center text-2xl text-[#323754]'>Enter</Link>
+          <Link to='/enter' className='text-center text-2xl text-[#323754]'>Enter</Link>
           <span className='text-center text-2xl text-[#323754] mx-2'>|</span>
-          <Link to='/' className='text-center text-2xl text-[#323754]'>Register</Link>
+          <Link to='/register' className='text-center text-2xl text-[#323754]'>Register</Link>
         </div>
         <div className="col-span-9 flex justify-left items-center">
           <div className="border-2 border-[#323754] rounded-md w-full h-[90%]"></div>
