@@ -2,8 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Register = () => {
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
+        const form = e.target;
+
+        const formData = new FormData(form);
+
+        
     }
     return (
         <div className="min-h-screen w-full flex flex-col justify-center items-center">
