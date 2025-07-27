@@ -4,7 +4,7 @@ import Header from './components/Header/Header.jsx'
 import Footer from './components/Footer/Footer.jsx'
 const Layout = () => {
   return (
-    <div className="min-h-screen w-full px-[30px] py-[50px]">
+    <div className="w-full min-h-screen px-[30px] py-[50px]">
       <Header/>
       <Outlet/>
       <Footer/>

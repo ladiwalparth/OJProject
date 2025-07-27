@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import uploadData from '../../service/api.js'
+import {uploadData} from '../../service/api.js'
 
 const Register = () => {
 
@@ -34,7 +34,7 @@ const Register = () => {
     }
     
     return (
-        <div className="min-h-screen w-full flex flex-col justify-center items-center">
+        <div className="mt-[50px] h-[625px] w-full flex flex-col justify-center items-center">
             <div className="text-3xl text-[#323754] mb-3 border border-black rounded-md py-3 px-6 font-bold"> Register </div>
 
             <form onSubmit={handleSubmit} className="rounded-xl h-[500px] w-[40%] shadow-lg/50 flex flex-col p-8 gap-3">

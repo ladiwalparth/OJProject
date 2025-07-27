@@ -1,4 +1,4 @@
-import { StrictMode } from 'react'
+import { StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
@@ -7,18 +7,18 @@ import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
 import Register from './components/Register/Register.jsx'
 import Enter from './components/Enter/Enter.jsx'
-
+import { loggedInUser } from './service/api.js'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-    <Route path='/' element={<Layout/>}>
-      <Route path='' element={<Home/>}/>
-    </Route>
-    <Route path='/register' element={<Register/>}/>
-    <Route path='/enter' element={<Enter/>}/> 
+      <Route path='/' loader={loggedInUser} element={<Layout />}>
+        <Route path='' element={<Home />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/enter' element={<Enter />} />
+      </Route>
     </>
-    
+
   )
 )
 
