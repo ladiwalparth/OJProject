@@ -7,6 +7,7 @@ import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
 import Register from './components/Register/Register.jsx'
 import Enter from './components/Enter/Enter.jsx'
+import Submit from './components/Submit/Submit.jsx'
 import { loggedInUser } from './service/api.js'
 
 const router = createBrowserRouter(
@@ -16,6 +17,7 @@ const router = createBrowserRouter(
         <Route path='' element={<Home />} />
         <Route path='/register' element={<Register />} />
         <Route path='/enter' element={<Enter />} />
+        <Route path='/submit' element={<Submit/>} />
       </Route>
     </>
 

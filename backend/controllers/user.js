@@ -1,6 +1,8 @@
 import { user } from "../models/user.js"
 import bcrypt from "bcryptjs";
 import { setUser, getUser } from "../service/auth.js"
+import axios from 'axios';
+
 async function handleUserRegister(req, res) {
     try {
 
@@ -93,4 +95,19 @@ async function handleLogOut(req, res) {
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut };
+async function handleOutput(req,res){
+    try {
+         const responseFromAxios = await axios.post('http://localhost:8400/getOutput',req.body,{
+            withCredentials: true
+        });
+        return res.status(200).json(responseFromAxios.data);
+    } catch (error) {
+        if(error.response){
+            res.status(500).json(error.response);
+        } else {
+            res.status(500).send('error while sending request from backend to compiler');
+        }
+    }
+}
+
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput };

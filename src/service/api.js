@@ -55,4 +55,19 @@ const logoutUser = async () => {
     }
 }
 
-export {uploadData, enterData, loggedInUser, logoutUser};
+const getOutput = async (data,navigate) => {
+    try {
+        const response = await axios.post('http://localhost:8000/getOutput',data,{
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        if(error.response?.status === 401){
+            alert("Please Enter to Submit");
+            navigate('/enter');
+        }
+        return (error.response?.data || "Something went wrong");
+    }
+}
+
+export {uploadData, enterData, loggedInUser, logoutUser, getOutput};
