@@ -3,6 +3,7 @@ import cors from 'cors'
 
 
 import generateFile from './generateFile.js'
+import generateInputFile from './generateInputFile.js'
 import executeCpp from './executeCpp.js'
 
 
@@ -22,14 +23,14 @@ app.get("/", (req, res) => {
 
 app.post("/getOutput", async (req, res) => {
     
-    
-    const { language = 'cpp', code } = req.body;
+    const { language = 'cpp', code, input } = req.body;
     if (code === undefined) {
         return res.status(404).json({ success: false, error: "Empty code!" });
     }
     try {
         const filePath = generateFile(language, code);
-        const output = await executeCpp(filePath);
+        const inputfilePath = generateInputFile(input);
+        const output = await executeCpp(filePath,inputfilePath);
         res.status(200).json({ filePath, output });
     } catch (error) {
         res.status(500).json({ error: error });

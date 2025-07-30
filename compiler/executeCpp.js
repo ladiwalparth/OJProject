@@ -14,13 +14,13 @@ if(!fs.existsSync(outputPath)){
     })
 }
 
-const executeCpp = async (filePath) => {
+const executeCpp = async (filePath,inputfilePath) => {
     const jobId = path.basename(filePath).split('.')[0];
     const outPath = path.join(outputPath,`${jobId}.out`);
     // execute function takes 2 argument one is command which is compulsory and other is callback
     // which is optional
     return new Promise((resolve, reject)=>{
-        exec(`g++ ${filePath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out`,(error, stdout, stderr) => {
+        exec(`g++ ${filePath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out < ${inputfilePath}`,(error, stdout, stderr) => {
             if(error){
                 console.log(error);
                 reject({error, stderr});

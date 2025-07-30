@@ -100,6 +100,8 @@ async function handleOutput(req,res){
          const responseFromAxios = await axios.post('http://localhost:8400/getOutput',req.body,{
             withCredentials: true
         });
+        // note we provide a javascript object in axios which it automatically converts
+        // to json.
         return res.status(200).json(responseFromAxios.data);
     } catch (error) {
         if(error.response){

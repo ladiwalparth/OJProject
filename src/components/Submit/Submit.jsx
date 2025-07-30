@@ -4,12 +4,14 @@ import { getOutput } from '../../service/api';
 import { useNavigate } from 'react-router-dom';
 const Submit = () => {
     const [code, setCode] = useState('');
+    const [input,setInput] = useState('');
     const [output, setOutput] = useState('// Output');
     const navigate = useNavigate();
     const handleOnClick = async () => {
         const data = {
             language: 'cpp',
-            code
+            code,
+            input
         }
         const temp = await getOutput(data, navigate);
         setOutput(temp.output);
@@ -37,7 +39,29 @@ const Submit = () => {
                      do something like e.target.value in onChange event listener   */}
                 </div>
                 <div className="flex flex-col w-[55%] h-full gap-3">
-                    <div className="border-2 border-[#323754] w-full h-full bg-gray-300 px-4">
+                    <div className="border-2 border-[#323754] w-full h-[40%] bg-gray-300 px-4">
+                        {/* <p style={{
+                            // fontFamily: '"Fira code", "Fira Mono", monospace',
+                            fontSize: 20,
+                            color: '#323754'
+                        }}>{output}</p> */}
+                        <Editor
+                            height="100%"
+                            width="100%"
+                            theme="vs"
+                            defaultLanguage="plaintext"
+                            defaultValue="// Enter Custom Input"
+                            value={input}
+                            onChange={(data) => setInput(data)}
+                            options={
+                                {
+                                    fontSize: 20,
+                                }
+                            }
+                        />
+
+                    </div>
+                    <div className="border-2 border-[#323754] w-full h-[40%] bg-gray-300 px-4">
                         {/* <p style={{
                             // fontFamily: '"Fira code", "Fira Mono", monospace',
                             fontSize: 20,
@@ -53,14 +77,15 @@ const Submit = () => {
                             onChange={(data) => setOutput(data)}
                             options={
                                 {
-                                    fontSize: 20
+                                    fontSize: 20,
                                 }
                             }
                         />
 
                     </div>
-                    <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex justify-center">
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{ fontSize: 20 }} onClick={handleOnClick}>Output</button>
+                    <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex flex-col gap-3 justify-center">
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{ fontSize: 20 }} onClick={handleOnClick}>Run</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{ fontSize: 20 }}>Submit</button>
                     </div>
                 </div>
             </div>
