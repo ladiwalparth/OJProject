@@ -31,7 +31,7 @@ const executeCpp = async (filePath,inputfilePath) => {
             if(stderr){
                 reject(stderr);
             }
-            resolve(stdout);
+            resolve({stdout,outPath});
         });
     });
 }; 
