@@ -11,7 +11,7 @@ const Submit = () => {
             language: 'cpp',
             code
         }
-        const temp = await getOutput(data,navigate);
+        const temp = await getOutput(data, navigate);
         setOutput(temp.output);
     }
     return (
@@ -22,7 +22,7 @@ const Submit = () => {
                     <Editor
                         height="100%"
                         width="100%"
-                        theme="vs-dark"
+                        theme="vs"
                         defaultLanguage="cpp"
                         defaultValue="// Write your code here"
                         value={code}
@@ -38,14 +38,29 @@ const Submit = () => {
                 </div>
                 <div className="flex flex-col w-[55%] h-full gap-3">
                     <div className="border-2 border-[#323754] w-full h-full bg-gray-300 px-4">
-                        <p style={{
+                        {/* <p style={{
                             // fontFamily: '"Fira code", "Fira Mono", monospace',
                             fontSize: 20,
                             color: '#323754'
-                        }}>{output}</p>
+                        }}>{output}</p> */}
+                        <Editor
+                            height="100%"
+                            width="100%"
+                            theme="vs"
+                            defaultLanguage="plaintext"
+                            defaultValue="// Output"
+                            value={output}
+                            onChange={(data) => setOutput(data)}
+                            options={
+                                {
+                                    fontSize: 20
+                                }
+                            }
+                        />
+
                     </div>
                     <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex justify-center">
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{fontSize: 20}} onClick={handleOnClick}>Output</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{ fontSize: 20 }} onClick={handleOnClick}>Output</button>
                     </div>
                 </div>
             </div>

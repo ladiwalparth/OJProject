@@ -2,5 +2,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 int main(){
-   cout << “jai srila prabhupada”;
+    cout << "hi\nhi";
+    cout << "HI";
 }
