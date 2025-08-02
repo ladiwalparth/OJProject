@@ -10,6 +10,7 @@ import Enter from './components/Enter/Enter.jsx'
 import Submit from './components/Submit/Submit.jsx'
 import ProblemSet from './components/ProblemSet/ProblemSet.jsx'
 import { loggedInUser } from './service/api.js'
+import DisplayProblem from './components/DisplayProblem/DisplayProblem.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
         <Route path='/enter' element={<Enter />} />
         <Route path='/submit' element={<Submit/>} />
         <Route path='/problemSet' element={<ProblemSet/>}/>
+        <Route path='/displayProblem/:id' element={<DisplayProblem/>}/>
       </Route>
     </>
 

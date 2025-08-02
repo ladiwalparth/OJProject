@@ -31,7 +31,7 @@ const enterData = async (data, navigate) => {
         } else {
             alert(error.response?.data || "Something went wrong");
         }
-        window.location.href = "http://localhost:5173/";
+        // window.location.href = "http://localhost:5173/";
     }
 }
 
@@ -70,4 +70,18 @@ const getOutput = async (data,navigate) => {
     }
 }
 
-export {uploadData, enterData, loggedInUser, logoutUser, getOutput};
+const getProblems = async (navigate) => {
+    try {
+        const response = await axios.get('http://localhost:8000/getProblems',{
+            withCredentials: true
+        });
+        // console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        alert("Error while fetching problems");
+        navigate('/');
+    }
+}
+
+export {uploadData, enterData, loggedInUser, logoutUser, getOutput, getProblems};

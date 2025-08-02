@@ -11,7 +11,7 @@ const Header = () => {
   }
   return (
     <>
-      <header className="grid grid-cols-9 grid-rows-[85px_80px] w-full gap-x-2 gap-y-2">
+      <header className="grid grid-cols-9 grid-rows-[80px_80px] w-full gap-x-2 gap-y-2">
         <Link
           to="/"
           className="border border-black h-full w-full col-span-2"

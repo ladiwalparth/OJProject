@@ -109,9 +109,9 @@ async function handleOutput(req, res) {
         return res.status(200).json(responseFromAxios.data);
     } catch (error) {
         if (error.response) {
-            res.status(500).json(error.response);
+            return res.status(500).json(error.response);
         } else {
-            res.status(500).send('error while sending request from backend to compiler');
+            return res.status(500).send('error while sending request from backend to compiler');
         }
     }
 }
@@ -133,4 +133,14 @@ async function seedProblems() {
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, seedProblems };
+async function handleGetProblems(req,res) {
+    try {
+        const problems = await Problem.find({});
+        // console.log(problems);
+        return res.status(200).json(problems);
+    } catch (error) {
+        return res.status(500).send('Error while fetching Problems');
+    }
+}
+
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, seedProblems, handleGetProblems};
