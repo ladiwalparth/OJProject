@@ -11,7 +11,7 @@ const Header = () => {
   }
   return (
     <>
-      <header className="grid grid-cols-9 grid-rows-2 w-full h-[175px] gap-x-2 gap-y-2">
+      <header className="grid grid-cols-9 grid-rows-[85px_80px] w-full gap-x-2 gap-y-2">
         <Link
           to="/"
           className="border border-black h-full w-full col-span-2"
@@ -52,8 +52,11 @@ const Header = () => {
             </>
           )}
         </div>
-        <div className="col-span-9 flex justify-left items-center">
-          <div className="border-2 border-[#323754] rounded-md w-full h-[90%]"></div>
+        <div className="col-span-9 flex items-center">
+          <div className="border-2 border-[#323754] rounded-md w-full h-[70%] flex items-center justify-start p-3 px-6 gap-10">
+            <Link to="/" className="text-2xl text-[#323754] font-semibold">Home</Link>
+            <Link to="/problemSet" className="text-2xl text-[#323754] font-semibold">ProblemSet</Link>
+          </div>
         </div>
 
 

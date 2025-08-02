@@ -1,4 +1,8 @@
 import { user } from "../models/user.js"
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from "url";
+import { Problem } from "../models/problems.js";
 import bcrypt from "bcryptjs";
 import { setUser, getUser } from "../service/auth.js"
 import axios from 'axios';
@@ -95,16 +99,16 @@ async function handleLogOut(req, res) {
     }
 }
 
-async function handleOutput(req,res){
+async function handleOutput(req, res) {
     try {
-         const responseFromAxios = await axios.post('http://localhost:8400/getOutput',req.body,{
+        const responseFromAxios = await axios.post('http://localhost:8400/getOutput', req.body, {
             withCredentials: true
         });
         // note we provide a javascript object in axios which it automatically converts
         // to json.
         return res.status(200).json(responseFromAxios.data);
     } catch (error) {
-        if(error.response){
+        if (error.response) {
             res.status(500).json(error.response);
         } else {
             res.status(500).send('error while sending request from backend to compiler');
@@ -112,4 +116,21 @@ async function handleOutput(req,res){
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput };
+async function seedProblems() {
+    try {
+        await Problem.deleteMany();
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        const problemsLocation = path.join(__dirname,"..",'problems.json');
+        const data = fs.readFileSync(problemsLocation,'utf-8');
+        // console.log(data);
+        const problems = JSON.parse(data);
+
+        await Problem.insertMany(problems);
+        console.log("Problems seeded successfully!");
+    } catch (error) {
+        console.error("Error seeding problems:", error);
+    }
+}
+
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, seedProblems };

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Sum of Two Numbers",
+    "code": "SUM001",
+    "difficulty": "Easy",
+    "statement": "Given two integers A and B, return their sum."
+  },
+  {
+    "name": "Factorial Finder",
+    "code": "FACT001",
+    "difficulty": "Medium",
+    "statement": "Given an integer N, return its factorial."
+  },
+  {
+    "name": "Prime Check",
+    "code": "PRIME001",
+    "difficulty": "Easy",
+    "statement": "Check whether the given number is prime."
+  }
+]
