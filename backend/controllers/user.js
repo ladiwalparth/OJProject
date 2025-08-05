@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from "url";
 import { Problem } from "../models/problems.js";
+import { Testcase } from "../models/testcases.js";
 import bcrypt from "bcryptjs";
 import { setUser, getUser } from "../service/auth.js"
 import axios from 'axios';
@@ -121,8 +122,8 @@ async function seedProblems() {
         await Problem.deleteMany();
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
-        const problemsLocation = path.join(__dirname,"..",'problems.json');
-        const data = fs.readFileSync(problemsLocation,'utf-8');
+        const problemsLocation = path.join(__dirname, "..", 'problems.json');
+        const data = fs.readFileSync(problemsLocation, 'utf-8');
         // console.log(data);
         const problems = JSON.parse(data);
 
@@ -133,7 +134,24 @@ async function seedProblems() {
     }
 }
 
-async function handleGetProblems(req,res) {
+async function seedTestCases() {
+    try {
+        await Testcase.deleteMany();
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        const testCasesLocation = path.join(__dirname, "..", 'testcases.json');
+        const data = fs.readFileSync(testCasesLocation, 'utf-8');
+        // console.log(data);
+        const testCases = JSON.parse(data);
+
+        await Testcase.insertMany(testCases);
+        console.log("TestCases seeded successfully!");
+    } catch (error) {
+        console.error("Error seeding problems:", error);
+    }
+}
+
+async function handleGetProblems(req, res) {
     try {
         const problems = await Problem.find({});
         // console.log(problems);
@@ -143,4 +161,24 @@ async function handleGetProblems(req,res) {
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, seedProblems, handleGetProblems};
+async function handleGetParticularProblem(req, res) {
+    try {
+        const { id } = req.params;
+        const problem = await Problem.findOne({ code: id });
+        return res.status(200).json(problem);
+    } catch (error) {
+        return res.status(500).send('Error while fetching Problem');
+    }
+}
+
+async function handleGetParticularTestCase(req, res) {
+    try {
+        const { id } = req.params;
+        const testcase = await Testcase.findOne({ problemCode: id });
+        return res.status(200).json(testcase);
+    } catch (error) {
+        return res.status(500).send('Error while fetching testcase');
+    }
+}
+
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, seedProblems, seedTestCases, handleGetProblems, handleGetParticularProblem, handleGetParticularTestCase };

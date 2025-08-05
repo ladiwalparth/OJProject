@@ -1,16 +1,16 @@
 import mongoose,{Schema} from "mongoose";
 
 const testcaseSchema = new Schema({
-    problem: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Problem'
-    },
-    input: {
+    problemCode: {
         type: String,
         required: true
     },
+    input: {
+        type: [String],
+        required: true
+    },
     output: {
-        type: String,
+        type: [String],
         required: true
     }
 });

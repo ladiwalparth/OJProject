@@ -1,6 +1,6 @@
 import mongoose,{Schema} from "mongoose";
 
-const solutionSchema = new Schema({
+const submissionSchema = new Schema({
     problem:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Problem'
@@ -23,6 +23,6 @@ const solutionSchema = new Schema({
     }
 });
 
-const Solution = mongoose.model("Solution",solutionSchema);
+const Submission = mongoose.model("Submission",submissionSchema);
 
-export {Solution};
+export {Submission};

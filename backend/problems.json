@@ -148,11 +148,5 @@
         "code": "PAREN025",
         "difficulty": "Medium",
         "statement": "Check whether a string of parentheses is balanced. A string is balanced if every opening bracket has a matching closing bracket in correct order. Include '()', '{}', and '[]'. Use a stack to solve this. Return true if the string is balanced, otherwise false. Handle edge cases like empty strings and unbalanced nesting."
-    },
-    {
-        "name": "Rotate Matrix 90 Degrees",
-        "code": "ROTATE026",
-        "difficulty": "Hard",
-        "statement": "Rotate a square matrix 90 degrees clockwise in-place. Do not use extra space for a new matrix"
     }
 ]

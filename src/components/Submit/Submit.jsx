@@ -84,8 +84,8 @@ const Submit = () => {
 
                     </div>
                     <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex flex-col gap-3 justify-center">
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{ fontSize: 20 }} onClick={handleOnClick}>Run</button>
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754]" style={{ fontSize: 20 }}>Submit</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg" style={{ fontSize: 27 }} onClick={handleOnClick}>Run</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg" style={{ fontSize: 27 }}>Submit</button>
                     </div>
                 </div>
             </div>

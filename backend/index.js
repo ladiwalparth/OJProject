@@ -4,11 +4,12 @@ import 'dotenv/config';
 import { connectionDB } from './database/db.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { seedProblems } from './controllers/user.js';
+import { seedProblems,seedTestCases } from './controllers/user.js';
 const app = express();
 
 connectionDB();
 seedProblems();
+seedTestCases();
 
 app.use(cors({
   origin: 'http://localhost:5173',
