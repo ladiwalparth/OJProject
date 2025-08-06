@@ -1,11 +1,12 @@
 import express from 'express';
-import {handleUserRegister,handleUserEnter,handleLoggedInUser,handleLogOut, handleOutput,handleGetProblems,handleGetParticularProblem, handleGetParticularTestCase} from '../controllers/user.js';
+import {handleUserRegister,handleUserEnter,handleLoggedInUser,handleLogOut, handleOutput, handleGetVerdict,handleGetProblems,handleGetParticularProblem, handleGetParticularTestCase} from '../controllers/user.js';
 import { restrictToLoggedinUserOnly } from '../middlewares/auth.js';
 const router = express.Router();
 
 router.post('/register', handleUserRegister);
 router.post('/enter', handleUserEnter);
 router.post('/getOutput',restrictToLoggedinUserOnly, handleOutput);
+router.post('/getVerdict',restrictToLoggedinUserOnly, handleGetVerdict);
 router.get('/getProblems',handleGetProblems);
 router.get('/getParticularProblem/:id',handleGetParticularProblem);
 router.get('/getParticularTestCase/:id',handleGetParticularTestCase);

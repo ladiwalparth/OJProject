@@ -1,4 +1,4 @@
-import { getUser } from "../service/auth.js";
+// import { getUser } from "../service/auth.js";
 
 
 
@@ -14,16 +14,15 @@ async function restrictToLoggedinUserOnly (req, res, next) {
 }
 
 
-async function checkAuth(req, res, next) {
-  const token= req.cookies?.token;
+// async function checkAuth(req, res, next) {
+//   const token= req.cookies?.token;
 
-  const user = getUser(token);
+//   const user = getUser(token);
 
-  req.user = user;
-  next();
-}
+//   req.user = user;
+//   next();
+// }
 
 export {
-  restrictToLoggedinUserOnly,
-  checkAuth,
+  restrictToLoggedinUserOnly
 }

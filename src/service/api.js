@@ -74,6 +74,24 @@ const getOutput = async (data, navigate) => {
     }
 }
 
+const getVerdict = async (data,navigate) => {
+    try {
+        const response = await axios.post('http://localhost:8000/getVerdict', data, {
+            withCredentials: true
+        });
+        if(response?.status === 200) {
+            alert("Code Submitted Successfully!")
+            navigate('/mySubmissions')
+        }
+    } catch (error) {
+        if (error.response?.status === 401) {
+            alert("Please Enter to Run");
+            navigate('/enter');
+        }
+        alert(error.response?.data || "Something went wrong");
+    }
+}
+
 const getProblems = async (navigate) => {
     try {
         const response = await axios.get('http://localhost:8000/getProblems', {
@@ -120,4 +138,4 @@ const getParticularTestCase = async (code) => {
 
 
 
-export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getProblems, getParticularProblem, getParticularTestCase };
+export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getProblems, getParticularProblem, getParticularTestCase };

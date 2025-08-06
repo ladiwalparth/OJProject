@@ -4,6 +4,7 @@ import path from 'path';
 import { fileURLToPath } from "url";
 import { Problem } from "../models/problems.js";
 import { Testcase } from "../models/testcases.js";
+import { Submission } from "../models/submission.js";
 import bcrypt from "bcryptjs";
 import { setUser, getUser } from "../service/auth.js"
 import axios from 'axios';
@@ -117,6 +118,32 @@ async function handleOutput(req, res) {
     }
 }
 
+async function handleGetVerdict(req, res){
+    try {
+        // json from axios in the front end parser to javascript object then again axios call to compiler
+        // stringifies it to json.
+        const {code, id} = req.body;
+        const testcase = await Testcase.findOne({problemCode: id});
+
+        const newRequestBody = {
+            language: "cpp",
+            testcase,
+            code
+        }
+
+        const responseFromAxios = await axios.post('http://localhost:8400/getVerdict',newRequestBody, {
+            withCredentials: true
+        });
+        return res.status(200);
+    } catch (error) {
+        if (error.response) {
+            return res.status(500).json(error.response);
+        } else {
+            return res.status(500).send('error while sending request from backend to compiler');
+        }
+    }
+}
+
 async function seedProblems() {
     try {
         await Problem.deleteMany();
@@ -181,4 +208,4 @@ async function handleGetParticularTestCase(req, res) {
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, seedProblems, seedTestCases, handleGetProblems, handleGetParticularProblem, handleGetParticularTestCase };
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, handleGetVerdict, seedProblems, seedTestCases, handleGetProblems, handleGetParticularProblem, handleGetParticularTestCase };

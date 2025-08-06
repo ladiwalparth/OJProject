@@ -14,7 +14,7 @@ const DisplayProblem = () => {
     const wrapper = async () => {
       const problemDetails = await getParticularProblem(id, navigate);
       const testCase = await getParticularTestCase(id);
-      console.log(testCase);
+      // console.log(testCase);
       if (problemDetails) {
         setProblemName(problemDetails.name);
         setProblemStatement(problemDetails.statement);

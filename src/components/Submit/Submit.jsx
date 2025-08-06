@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Editor from '@monaco-editor/react';
-import { getOutput } from '../../service/api';
-import { useNavigate } from 'react-router-dom';
+import { getOutput,getVerdict } from '../../service/api';
+import { useNavigate,useParams } from 'react-router-dom';
 const Submit = () => {
     const [code, setCode] = useState('');
     const [input,setInput] = useState('');
     const [output, setOutput] = useState('// Output');
     const navigate = useNavigate();
+    const { id } = useParams();
     const handleOnClick = async () => {
         const data = {
             language: 'cpp',
@@ -15,6 +16,14 @@ const Submit = () => {
         }
         const temp = await getOutput(data, navigate);
         setOutput(temp.output);
+    }
+    const handleSubmit = async () => {
+        console.log("ran code");
+        const data = {
+            code,
+            id
+        }
+        await getVerdict(data,navigate);
     }
     return (
         <div className="w-full h-screen py-2">
@@ -84,8 +93,8 @@ const Submit = () => {
 
                     </div>
                     <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex flex-col gap-3 justify-center">
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg" style={{ fontSize: 27 }} onClick={handleOnClick}>Run</button>
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg" style={{ fontSize: 27 }}>Submit</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleOnClick}>Run</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleSubmit}>Submit</button>
                     </div>
                 </div>
             </div>
