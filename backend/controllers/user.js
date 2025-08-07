@@ -118,26 +118,50 @@ async function handleOutput(req, res) {
     }
 }
 
-async function handleGetVerdict(req, res){
+async function handleGetVerdict(req, res) {
+    let code, id, user, testcase, problem, newRequestBody;
     try {
         // json from axios in the front end parser to javascript object then again axios call to compiler
         // stringifies it to json.
-        const {code, id} = req.body;
-        const testcase = await Testcase.findOne({problemCode: id});
+        ({ code, id } = req.body);
+        // to treat it as a expression and not a block statement.
 
-        const newRequestBody = {
+        user = req.user;
+
+        testcase = await Testcase.findOne({ problemCode: id });
+        problem = await Problem.findOne({ code: id });
+        newRequestBody = {
             language: "cpp",
             testcase,
             code
         }
-
-        const responseFromAxios = await axios.post('http://localhost:8400/getVerdict',newRequestBody, {
+        // user method temporarily created only for backend.
+        const responseFromAxios = await axios.post('http://localhost:8400/getVerdict', newRequestBody, {
             withCredentials: true
         });
-        return res.status(200);
+        try {
+            await Submission.create({
+                problem: problem.name,
+                verdict: "Accepted",
+                submitted_by: user._id
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        if (responseFromAxios?.status === 200) {
+            return (res.status(200).json(responseFromAxios.data));
+        }
+
+
     } catch (error) {
-        if (error.response) {
-            return res.status(500).json(error.response);
+        if (error.response?.status === 401) {
+            await Submission.create({
+                problem: problem.name,
+                verdict: "Rejected",
+                submitted_by: user._id
+            })
+            return res.status(200).json(error.response.data);
         } else {
             return res.status(500).send('error while sending request from backend to compiler');
         }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MySubmissions = () => {
+const Submissions = () => {
   return (
     <div>
       hellow
@@ -8,4 +8,4 @@ const MySubmissions = () => {
   )
 }
 
-export default MySubmissions
+export default Submissions

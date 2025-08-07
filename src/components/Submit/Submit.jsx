@@ -18,7 +18,6 @@ const Submit = () => {
         setOutput(temp.output);
     }
     const handleSubmit = async () => {
-        console.log("ran code");
         const data = {
             code,
             id
@@ -35,7 +34,7 @@ const Submit = () => {
                         width="100%"
                         theme="vs"
                         defaultLanguage="cpp"
-                        defaultValue="// Write your code here"
+                        defaultValue="// Output each of your answer in a new line"
                         value={code}
                         onChange={(data) => setCode(data)}
                         options={

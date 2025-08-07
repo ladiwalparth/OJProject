@@ -2,26 +2,18 @@ import mongoose,{Schema} from "mongoose";
 
 const submissionSchema = new Schema({
     problem:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Problem'
+        type: String,
+        required: true
     },
     verdict:{
         type: String,
-        enum: ["Accepted, Rejected"]
-    },
-    submitted_at:{
-        type: Date,
-        default: Date.now 
+        enum: ["Accepted","Rejected"]
     },
     submitted_by:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "user"
     },
-    code: {
-        type: String,
-        required: true
-    }
-});
+},{timestamps: true});
 
 const Submission = mongoose.model("Submission",submissionSchema);
 

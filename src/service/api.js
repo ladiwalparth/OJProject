@@ -81,14 +81,15 @@ const getVerdict = async (data,navigate) => {
         });
         if(response?.status === 200) {
             alert("Code Submitted Successfully!")
-            navigate('/mySubmissions')
+            navigate('/Submissions')
         }
     } catch (error) {
         if (error.response?.status === 401) {
-            alert("Please Enter to Run");
+            alert("Please Enter to Submit");
             navigate('/enter');
-        }
+        } else {
         alert(error.response?.data || "Something went wrong");
+        }
     }
 }
 

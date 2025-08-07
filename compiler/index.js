@@ -36,9 +36,9 @@ app.post("/getOutput", async (req, res) => {
         output = result.stdout;
         outpath = result.outPath;
 
-        res.status(200).json({ filePath, output });
+        return res.status(200).json({ filePath, output });
     } catch (error) {
-        res.status(500).json({ error: error });
+        return res.status(500).json({ error: error });
     } finally {
         try {
             if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
@@ -65,6 +65,7 @@ app.post("/getVerdict", async (req, res) => {
         output = result.stdout;
         outpath = result.outPath;
 
+        let responseSent = false;
         const expectedOutputs = testcase.output;
         const actualOutputs = output.trim().split('\n');
 
@@ -74,11 +75,25 @@ app.post("/getVerdict", async (req, res) => {
                 console.log(`Test Case ${index + 1}: passed`);
             } else {
                 console.log(`Test Case ${index + 1}: Failed`);
+                if(responseSent==false){
+                    responseSent = true;
+                    return res.status(401).json({ success: false, error: `Test Case ${index + 1}: Failed`});
+                }
+                // doubt to ask ?????
+                // why running a full try block?
             }
         });
-
+        if(responseSent==false) return res.status(200).json({success: true});
     } catch (error) {
-
+        return res.status(500).json({error: error});
+    } finally {
+        try {
+            if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
+            if (inputfilePath && fs.existsSync(inputfilePath)) fs.unlinkSync(inputfilePath);
+            if (outpath && fs.existsSync(outpath)) fs.unlinkSync(outpath);
+        } catch (cleanupErr) {
+            console.error("Error cleaning up files:", cleanupErr);
+        }
     }
 
 })
