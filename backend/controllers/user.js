@@ -222,6 +222,16 @@ async function handleGetParticularProblem(req, res) {
     }
 }
 
+async function handleGetSubmissions(req, res) {
+    try {
+        const user = req.user;
+        const submissions = await Submission.find({submitted_by: user._id});
+        return res.status(200).json(submissions);
+    } catch (error) {
+        return res.status(500).send('Error while fetching Submissions');
+    }
+}
+
 async function handleGetParticularTestCase(req, res) {
     try {
         const { id } = req.params;
@@ -232,4 +242,4 @@ async function handleGetParticularTestCase(req, res) {
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, handleGetVerdict, seedProblems, seedTestCases, handleGetProblems, handleGetParticularProblem, handleGetParticularTestCase };
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, handleGetVerdict, seedProblems, seedTestCases, handleGetProblems, handleGetSubmissions, handleGetParticularProblem, handleGetParticularTestCase };

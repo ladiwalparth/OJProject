@@ -107,6 +107,24 @@ const getProblems = async (navigate) => {
     }
 }
 
+const getSubmissions = async (navigate) => {
+    try {
+        const response = await axios.get('http://localhost:8000/getSubmissions', {
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        console.log(error);
+        if (error.response?.status === 401) {
+            alert("Please Enter to see Your Submissions");
+            navigate('/enter');
+        } else {
+            alert(error.response?.data || "Something went wrong");
+            navigate('/');
+        }
+    }
+}
+
 const getParticularProblem = async (code, navigate) => {
     try {
         const response = await axios.get(`http://localhost:8000/getParticularProblem/${code}`, {
@@ -139,4 +157,4 @@ const getParticularTestCase = async (code) => {
 
 
 
-export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getProblems, getParticularProblem, getParticularTestCase };
+export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getProblems, getSubmissions, getParticularProblem, getParticularTestCase };

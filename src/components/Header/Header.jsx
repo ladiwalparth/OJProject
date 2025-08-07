@@ -56,7 +56,7 @@ const Header = () => {
           <div className="border-2 border-[#323754] rounded-md w-full h-[70%] flex items-center justify-start p-3 px-6 gap-10">
             <Link to="/" className="text-2xl text-[#323754] font-semibold">Home</Link>
             <Link to="/problemSet" className="text-2xl text-[#323754] font-semibold">ProblemSet</Link>
-            <Link to="/Submissions" className="text-2xl text-[#323754] font-semibold">Submissions</Link>
+            <Link to="/Submissions" className="text-2xl text-[#323754] font-semibold">MySubmissions</Link>
           </div>
         </div>
 
