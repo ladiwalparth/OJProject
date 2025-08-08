@@ -2,6 +2,8 @@ import { useState } from 'react'
 import Editor from '@monaco-editor/react';
 import { getOutput,getVerdict,getAIReview } from '../../service/api';
 import { useNavigate,useParams } from 'react-router-dom';
+import Markdown from 'react-markdown';
+
 const Submit = () => {
     const [code, setCode] = useState('');
     const [input,setInput] = useState('');
