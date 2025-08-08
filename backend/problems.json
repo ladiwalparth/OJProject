@@ -1,0 +1,152 @@
+[
+    {
+        "name": "Prime Check",
+        "code": "PRIME001",
+        "difficulty": "Easy",
+        "statement": "Check whether the given number is prime. A prime number is a number greater than 1 that has no positive divisors other than 1 and itself. You need to write a function that takes a single integer as input and returns whether it is a prime or not. Make sure to handle edge cases such as numbers less than 2. Try to write an efficient solution even though the constraints are small. Avoid using built-in functions that directly determine primality. Output true if the number is prime, otherwise false."
+    },
+    {
+        "name": "Palindrome Number",
+        "code": "PALIN002",
+        "difficulty": "Easy",
+        "statement": "Given a number, check whether it is a palindrome. A palindrome number is one that remains the same when its digits are reversed. For example, 121 and 1331 are palindromes, but 123 is not. Your task is to implement a function that takes a non-negative integer and returns true if it is a palindrome, else false. Don’t convert the number to a string. Try to reverse the number mathematically. Handle edge cases like single-digit and zero inputs."
+    },
+    {
+        "name": "Fibonacci Series Generator",
+        "code": "FIB003",
+        "difficulty": "Easy",
+        "statement": "Write a program to generate the first N Fibonacci numbers. The Fibonacci sequence starts with 0 and 1, and every subsequent number is the sum of the previous two. Your function should take an integer N and return a list of the first N terms. If N is 0, return an empty list. If N is 1, return [0]. Ensure that your solution works efficiently even for larger values of N. Avoid using recursion without memoization."
+    },
+    {
+        "name": "Factorial Finder",
+        "code": "FACT004",
+        "difficulty": "Easy",
+        "statement": "Given an integer N, find its factorial. The factorial of a number N is defined as the product of all positive integers from 1 to N (inclusive). For example, the factorial of 5 is 120. Your task is to write a function that computes the factorial of N using iteration. The input will be a non-negative integer. For 0, the output should be 1. Avoid using built-in factorial functions and make sure to handle larger inputs using appropriate data types."
+    },
+    {
+        "name": "Sum of Digits",
+        "code": "SUMD005",
+        "difficulty": "Easy",
+        "statement": "Given a number N, compute the sum of its digits. For example, if the input is 1234, the output should be 1 + 2 + 3 + 4 = 10. Write a function that takes a non-negative integer and returns the sum of its digits. Avoid converting the number to a string. Use arithmetic operators to extract and add each digit. Think about how to handle edge cases like 0. Ensure your solution is efficient even for large numbers with many digits."
+    },
+    {
+        "name": "Count Vowels in String",
+        "code": "VOWEL006",
+        "difficulty": "Easy",
+        "statement": "Given a string, count the number of vowels present in it. Vowels include the letters a, e, i, o, and u (both uppercase and lowercase). Write a function that iterates through each character of the string and checks whether it is a vowel. The function should return the total count of vowels found. Ignore spaces and punctuation marks. Handle edge cases like an empty string. Avoid using regex unless absolutely necessary."
+    },
+    {
+        "name": "Reverse a Number",
+        "code": "REVNUM007",
+        "difficulty": "Easy",
+        "statement": "Given a positive integer, reverse its digits. For example, if the input is 123, the output should be 321. You must implement a function that performs this operation without converting the number into a string. Use mathematical operations like modulus and division. Ensure that the function returns an integer and not a string. Handle edge cases like trailing zeros correctly. For example, 100 should return 1."
+    },
+    {
+        "name": "Check Armstrong Number",
+        "code": "ARM008",
+        "difficulty": "Easy",
+        "statement": "An Armstrong number is a number that is equal to the sum of its own digits each raised to the power of the number of digits. For example, 153 is an Armstrong number because 1³ + 5³ + 3³ = 153. Write a function that takes a positive integer and returns true if it is an Armstrong number, else false. Avoid converting the number to a string. Use mathematical operations to extract and raise digits. Handle edge cases like single-digit numbers."
+    },
+    {
+        "name": "Find Largest Element",
+        "code": "MAX009",
+        "difficulty": "Easy",
+        "statement": "Given an array of integers, find the largest element. Your function should take an array as input and return the largest value present. Do not use built-in methods like Math.max. Traverse the array using loops and compare each value. Handle edge cases like an empty array (return null or an appropriate message). Ensure that your solution works with both positive and negative integers. Optimize the loop to run in O(n) time."
+    },
+    {
+        "name": "Check Even or Odd",
+        "code": "EVENODD010",
+        "difficulty": "Easy",
+        "statement": "Write a function that determines whether a given number is even or odd. The function should take an integer as input and return 'Even' if it is divisible by 2, otherwise 'Odd'. Avoid using any built-in method that checks for parity. Use the modulus operator to find the remainder when divided by 2. Consider negative numbers and zero. Ensure that the function works for very large integers too."
+    },
+    {
+        "name": "Count Occurrences of Character",
+        "code": "CHARCNT011",
+        "difficulty": "Easy",
+        "statement": "Given a string and a character, count how many times the character appears in the string. The comparison should be case-sensitive. For example, 'a' and 'A' should be treated differently. Return 0 if the character is not found. Do not use built-in count functions. Iterate through the string and keep a counter. Handle edge cases like empty strings and single-character strings."
+    },
+    {
+        "name": "Check Leap Year",
+        "code": "LEAP012",
+        "difficulty": "Easy",
+        "statement": "Given a year, check whether it is a leap year or not. A leap year is divisible by 4 but not by 100, unless it is also divisible by 400. Write a function that takes a year as input and returns true if it is a leap year, else false. Do not use built-in date libraries. Make sure your logic covers all edge cases, such as years like 1900 and 2000."
+    },
+    {
+        "name": "Sum of N Natural Numbers",
+        "code": "SUMN013",
+        "difficulty": "Easy",
+        "statement": "Given a positive integer N, find the sum of the first N natural numbers. For example, if N is 5, the result should be 1+2+3+4+5 = 15. Implement this using both loop-based and formula-based solutions. Handle edge cases like N = 0 or N = 1. Validate the input to ensure it’s a positive integer."
+    },
+    {
+        "name": "Swap Two Numbers",
+        "code": "SWAP014",
+        "difficulty": "Easy",
+        "statement": "Write a function to swap two numbers without using a third variable. Your function should accept two numbers and return them swapped. Use arithmetic operations such as addition and subtraction or XOR. Ensure that your method works for negative numbers and zeros. Return the swapped values as an array or tuple."
+    },
+    {
+        "name": "Check Perfect Square",
+        "code": "SQUARE015",
+        "difficulty": "Easy",
+        "statement": "Given a non-negative integer, determine whether it is a perfect square. A perfect square is a number whose square root is an integer. Do not use Math.sqrt. Try to use binary search or a loop to check this condition. Return true if it's a perfect square, otherwise false. Handle edge cases like 0 and 1."
+    },
+    {
+        "name": "Reverse a String",
+        "code": "REVSTR016",
+        "difficulty": "Easy",
+        "statement": "Write a function that reverses the input string. Do not use built-in reverse methods. Iterate through the string from the end to the beginning and build a new reversed string. Handle empty strings, strings with spaces, and punctuation. Your function should return the reversed version."
+    },
+    {
+        "name": "Remove Duplicates from Array",
+        "code": "DEDUP017",
+        "difficulty": "Easy",
+        "statement": "Given an array of integers, return a new array with duplicates removed. The order of elements should remain as in the original array. Do not use Set or built-in de-duplication functions. Use an auxiliary array or object to track previously seen values. Handle edge cases like empty arrays or all elements being the same."
+    },
+    {
+        "name": "Check Anagram",
+        "code": "ANAGRAM018",
+        "difficulty": "Easy",
+        "statement": "Given two strings, check whether they are anagrams of each other. Anagrams contain the same characters but possibly in a different order. Ignore spaces and case. Return true if they are anagrams, else false. Sort the strings or use frequency counting to check. Avoid using any built-in utility that checks anagrams."
+    },
+    {
+        "name": "Sum of Even Numbers in Array",
+        "code": "EVENSUM019",
+        "difficulty": "Easy",
+        "statement": "Write a function that returns the sum of all even numbers present in an array. Ignore odd numbers and only accumulate the even ones. Handle edge cases like arrays with all odd numbers or an empty array. Ensure your solution runs in O(n) time and does not use extra space except for the sum accumulator."
+    },
+    {
+        "name": "Find Second Largest",
+        "code": "SECLARG020",
+        "difficulty": "Easy",
+        "statement": "Given an array of integers, find the second largest element. Do not sort the array. Traverse the array once or twice to find the maximum and then the second maximum. Handle edge cases where all elements are the same or the array has fewer than two elements. Return null in such cases."
+    },
+    {
+        "name": "Matrix Transpose",
+        "code": "MATRIX021",
+        "difficulty": "Medium",
+        "statement": "Given a 2D matrix, return its transpose. The transpose of a matrix is obtained by flipping it over its diagonal. For example, the element at row i and column j becomes the element at row j and column i. Write a function that accepts a 2D array and returns its transpose. Ensure you handle non-square matrices correctly. Validate the matrix is not jagged. Avoid using libraries like numpy or similar."
+    },
+    {
+        "name": "Find Missing Number",
+        "code": "MISSNUM022",
+        "difficulty": "Medium",
+        "statement": "You are given an array of size N-1 containing distinct integers from 1 to N. Find the missing number. You can use the formula for sum of first N natural numbers to solve this efficiently. Try to avoid sorting or using extra space. Consider edge cases like missing first or last number. Return the missing number as an integer."
+    },
+    {
+        "name": "Sort 0s, 1s, and 2s",
+        "code": "SORT012023",
+        "difficulty": "Medium",
+        "statement": "Given an array consisting only of 0s, 1s, and 2s, sort the array in a single pass without using any sorting algorithm. This is also known as the Dutch National Flag problem. Your solution should not use extra space and should modify the array in-place. Validate input and handle edge cases like all elements being the same."
+    },
+    {
+        "name": "Longest Word in Sentence",
+        "code": "LONGWORD024",
+        "difficulty": "Medium",
+        "statement": "Given a sentence, return the longest word in it. In case of ties, return the first longest word. Ignore punctuation but preserve case. Split the sentence using spaces and remove non-alphabetic characters. Handle edge cases like empty strings or multiple spaces. Do not use regex libraries for this task."
+    },
+    {
+        "name": "Balanced Parentheses",
+        "code": "PAREN025",
+        "difficulty": "Medium",
+        "statement": "Check whether a string of parentheses is balanced. A string is balanced if every opening bracket has a matching closing bracket in correct order. Include '()', '{}', and '[]'. Use a stack to solve this. Return true if the string is balanced, otherwise false. Handle edge cases like empty strings and unbalanced nesting."
+    }
+]
