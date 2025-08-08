@@ -27,7 +27,7 @@ const enterData = async (data, navigate) => {
         if (document.referrer) {
             window.location = document.referrer;
         } else {
-            window.location.href = "http://localhost:5173/"; 
+            window.location.href = "http://localhost:5173/";
         }
     } catch (error) {
         if (error.response?.status === 409) {
@@ -74,12 +74,12 @@ const getOutput = async (data, navigate) => {
     }
 }
 
-const getVerdict = async (data,navigate) => {
+const getVerdict = async (data, navigate) => {
     try {
         const response = await axios.post('http://localhost:8000/getVerdict', data, {
             withCredentials: true
         });
-        if(response?.status === 200) {
+        if (response?.status === 200) {
             alert("Code Submitted Successfully!")
             navigate('/Submissions')
         }
@@ -88,7 +88,23 @@ const getVerdict = async (data,navigate) => {
             alert("Please Enter to Submit");
             navigate('/enter');
         } else {
-        alert(error.response?.data || "Something went wrong");
+            alert(error.response?.data || "Something went wrong");
+        }
+    }
+}
+
+const getAIReview = async (data,navigate) => {
+    try {
+        const response = await axios.post('http://localhost:8000/aiReview', data, {
+            withCredentials: true
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response?.status === 401) {
+            alert("Please Enter to get your Code's AI review");
+            navigate('/enter');
+        } else {
+            alert(error.response?.data || "Something went wrong");
         }
     }
 }
@@ -157,4 +173,4 @@ const getParticularTestCase = async (code) => {
 
 
 
-export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getProblems, getSubmissions, getParticularProblem, getParticularTestCase };
+export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getAIReview, getProblems, getSubmissions, getParticularProblem, getParticularTestCase };

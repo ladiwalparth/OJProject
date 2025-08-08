@@ -35,6 +35,8 @@ const DisplayProblem = () => {
         <div className='text-2xl text-[#323754] font-semibold'>TestCases</div>
         <div className='text-2xl text-[#323754] font-semibold mt-2 px-3'>Input</div>
         <div className='w-full border-2 border-[#323754] rounded-md'>
+          {sampleTestCase && <div className='text-xl text-[#323754] font-normal px-5'>Total TestCases - {sampleTestCase.input.length}</div>}
+          {/* otherwise it would give error as useEffect runs after the component renders and at that time it is null */}
           {sampleTestCase && sampleTestCase.input.map((item, index) => {
             return <div className='text-xl text-[#323754] font-normal px-5'>{index + 1} - {item}</div>;
           })}

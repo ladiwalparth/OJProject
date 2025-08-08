@@ -1,5 +1,5 @@
 import express from 'express';
-import {handleUserRegister,handleUserEnter,handleLoggedInUser,handleLogOut, handleOutput, handleGetVerdict,handleGetProblems,handleGetSubmissions,handleGetParticularProblem, handleGetParticularTestCase} from '../controllers/user.js';
+import {handleUserRegister,handleUserEnter,handleLoggedInUser,handleLogOut, handleOutput, handleGetVerdict,handleGetProblems,handleGetSubmissions,handleGetParticularProblem,handleGetParticularTestCase,handleAIReview} from '../controllers/user.js';
 import { restrictToLoggedinUserOnly } from '../middlewares/auth.js';
 const router = express.Router();
 
@@ -13,6 +13,8 @@ router.get('/getParticularProblem/:id',handleGetParticularProblem);
 router.get('/getParticularTestCase/:id',handleGetParticularTestCase);
 router.get('/loggedInData', handleLoggedInUser);
 router.get('/logOut', handleLogOut);
+
+router.post('/aiReview',restrictToLoggedinUserOnly,handleAIReview);
 // to be imported from controllers
 
 export default router

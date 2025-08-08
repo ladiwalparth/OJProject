@@ -8,6 +8,8 @@ import { Submission } from "../models/submission.js";
 import bcrypt from "bcryptjs";
 import { setUser, getUser } from "../service/auth.js"
 import axios from 'axios';
+import { GoogleGenAI } from "@google/genai";
+import 'dotenv/config';
 
 async function handleUserRegister(req, res) {
     try {
@@ -103,6 +105,7 @@ async function handleLogOut(req, res) {
 
 async function handleOutput(req, res) {
     try {
+
         const responseFromAxios = await axios.post('http://localhost:8400/getOutput', req.body, {
             withCredentials: true
         });
@@ -225,7 +228,7 @@ async function handleGetParticularProblem(req, res) {
 async function handleGetSubmissions(req, res) {
     try {
         const user = req.user;
-        const submissions = await Submission.find({submitted_by: user._id});
+        const submissions = await Submission.find({ submitted_by: user._id });
         return res.status(200).json(submissions);
     } catch (error) {
         return res.status(500).send('Error while fetching Submissions');
@@ -242,4 +245,37 @@ async function handleGetParticularTestCase(req, res) {
     }
 }
 
-export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, handleGetVerdict, seedProblems, seedTestCases, handleGetProblems, handleGetSubmissions, handleGetParticularProblem, handleGetParticularTestCase };
+async function handleAIReview(req, res) {
+
+    const { code } = req.body;
+
+    if (code === undefined || code.trim() === '') {
+        return res.status(400).json({
+            success: false,
+            error: "Empty code"
+        })
+    }
+
+    try {
+        // The client gets the API key from the environment variable `GEMINI_API_KEY`.
+        const ai = new GoogleGenAI({
+            apiKey: process.env.GEMINI_API_KEY
+        });
+
+        const response = await ai.models.generateContent({
+            model: "gemini-2.0-flash",
+            contents: `you are a code review expert,
+            you are given a code, you need to review it and give a 4-5 line review of the code, each line should contain only 10-15 words, and each line should start with ordered numbering, but please note do not provide direct answer to the user, give only suggestions,
+            the code is ${code}`,
+        });
+        // console.log(response.text);
+        res.status(200).json({
+            output: response.text
+        })
+
+    } catch (error) {
+        return res.status(500).send('Error in AI-review');
+    }
+}
+
+export { handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut, handleOutput, handleGetVerdict, seedProblems, seedTestCases, handleGetProblems, handleGetSubmissions, handleGetParticularProblem, handleGetParticularTestCase, handleAIReview };

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Editor from '@monaco-editor/react';
-import { getOutput,getVerdict } from '../../service/api';
+import { getOutput,getVerdict,getAIReview } from '../../service/api';
 import { useNavigate,useParams } from 'react-router-dom';
 const Submit = () => {
     const [code, setCode] = useState('');
@@ -24,6 +24,13 @@ const Submit = () => {
         }
         await getVerdict(data,navigate);
     }
+    const handleAIReview = async () => {
+        const data = {
+            code
+        }
+        const temp = await getAIReview(data,navigate);
+        setOutput(temp.output);
+    }
     return (
         <div className="w-full h-screen py-2">
             <div className="w-full h-full flex gap-3">
@@ -34,12 +41,26 @@ const Submit = () => {
                         width="100%"
                         theme="vs"
                         defaultLanguage="cpp"
-                        defaultValue="// Output each of your answer in a new line"
+                        defaultValue="#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    
+    int t = <NoOfTestCases>;
+
+    while(t--){
+    
+        // Your solution here and display each output in new line.
+
+        cout << <output> << '\n';
+    }
+    return 0;
+}"
                         value={code}
                         onChange={(data) => setCode(data)}
                         options={
                             {
-                                fontSize: 20
+                                fontSize: 20,
                             }
                         }
                     />
@@ -63,7 +84,7 @@ const Submit = () => {
                             onChange={(data) => setInput(data)}
                             options={
                                 {
-                                    fontSize: 20,
+                                    fontSize: 18,
                                 }
                             }
                         />
@@ -85,7 +106,7 @@ const Submit = () => {
                             onChange={(data) => setOutput(data)}
                             options={
                                 {
-                                    fontSize: 20,
+                                    fontSize: 18,
                                 }
                             }
                         />
@@ -94,6 +115,7 @@ const Submit = () => {
                     <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex flex-col gap-3 justify-center">
                         <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleOnClick}>Run</button>
                         <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleSubmit}>Submit</button>
+                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleAIReview}>AI review</button>
                     </div>
                 </div>
             </div>

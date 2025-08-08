@@ -7,7 +7,7 @@ const Home = () => {
         <h1 className="text-4xl font-bold mb-4 text-[#323754]">Hi, I'm Parth Ladiwal 👋</h1>
         <p className="text-lg mb-6">
           I'm a software developer with a passion for problem-solving, full stack web development, and competitive programming.
-          Currently pursuing B.Tech in ECE at LNMIIT, I've built MERN stack projects and participated in coding platforms like Codeforces, LeetCode and solved more than 600 data structure and algorithm Problems on these platforms.
+          Currently pursuing B.Tech in ECE at LNMIIT, I've built MERN stack projects and participated in coding platforms like Codeforces, LeetCode and solved more than 600 data structure and algorithm problems on these platforms.
         </p>
 
         <div className="h-[548px]">
