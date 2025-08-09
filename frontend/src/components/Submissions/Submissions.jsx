@@ -15,7 +15,7 @@ const Submissions = () => {
   return (
     <div className="flex flex-col gap-2">
       
-      {submissions.map(item => {
+      {submissions && submissions.map(item => {
         return <div key={item._id} className="text-2xl text-[#323754] font-semibold h-10 border-2 border-[#323754] px-3 flex justify-between items-center">
           <div className="mx-5">ProblemName:  {item.problem}</div>
           <div className="mx-5">Verdict:  {item.verdict}</div>

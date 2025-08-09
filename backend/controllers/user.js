@@ -106,7 +106,7 @@ async function handleLogOut(req, res) {
 async function handleOutput(req, res) {
     try {
 
-        const responseFromAxios = await axios.post('http://localhost:8400/getOutput', req.body, {
+        const responseFromAxios = await axios.post(`${process.env.COMPILER_URL}/getOutput`, req.body, {
             withCredentials: true
         });
         // note we provide a javascript object in axios which it automatically converts
@@ -122,31 +122,33 @@ async function handleOutput(req, res) {
 }
 
 async function handleGetVerdict(req, res) {
-    let code, id, user, testcase, problem, newRequestBody;
+    let code, id, userWhoSubmitted, fulluserWhoSubmitted, testcase, problem, newRequestBody;
     try {
         // json from axios in the front end parser to javascript object then again axios call to compiler
         // stringifies it to json.
         ({ code, id } = req.body);
         // to treat it as a expression and not a block statement.
 
-        user = req.user;
+        userWhoSubmitted = req.user;
 
         testcase = await Testcase.findOne({ problemCode: id });
         problem = await Problem.findOne({ code: id });
+        fulluserWhoSubmitted = await user.findOne({userId: userWhoSubmitted.id});
+        
         newRequestBody = {
             language: "cpp",
             testcase,
             code
         }
         // user method temporarily created only for backend.
-        const responseFromAxios = await axios.post('http://localhost:8400/getVerdict', newRequestBody, {
+        const responseFromAxios = await axios.post(`${process.env.COMPILER_URL}/getVerdict`, newRequestBody, {
             withCredentials: true
         });
         try {
             await Submission.create({
                 problem: problem.name,
                 verdict: "Accepted",
-                submitted_by: user._id
+                submitted_by: fulluserWhoSubmitted._id
             });
         } catch (error) {
             console.log(error);
@@ -162,7 +164,7 @@ async function handleGetVerdict(req, res) {
             await Submission.create({
                 problem: problem.name,
                 verdict: "Rejected",
-                submitted_by: user._id
+                submitted_by: fulluserWhoSubmitted._id
             })
             return res.status(200).json(error.response.data);
         } else {
@@ -227,8 +229,9 @@ async function handleGetParticularProblem(req, res) {
 
 async function handleGetSubmissions(req, res) {
     try {
-        const user = req.user;
-        const submissions = await Submission.find({ submitted_by: user._id });
+        const userWhoSubmitted = req.user;
+        const fulluserWhoSubmitted = await user.findOne({ userId: userWhoSubmitted.id });
+        const submissions = await Submission.find({ submitted_by: fulluserWhoSubmitted._id });
         return res.status(200).json(submissions);
     } catch (error) {
         return res.status(500).send('Error while fetching Submissions');

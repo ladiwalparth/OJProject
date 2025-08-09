@@ -2,7 +2,7 @@ import axios from "axios";
 
 const uploadData = async (data, navigate) => {
     try {
-        const response = await axios.post('http://localhost:8000/register', data, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/register`, data, {
             withCredentials: true,
         });
         alert(response.data);
@@ -19,16 +19,12 @@ const uploadData = async (data, navigate) => {
 
 const enterData = async (data, navigate) => {
     try {
-        const response = await axios.post('http://localhost:8000/enter', data, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/enter`, data, {
             withCredentials: true,
         });
         alert(response.data);
 
-        if (document.referrer) {
-            window.location = document.referrer;
-        } else {
-            window.location.href = "http://localhost:5173/";
-        }
+        window.location.href = "http://localhost:5173/";
     } catch (error) {
         if (error.response?.status === 409) {
             alert(error.response.data);
@@ -40,7 +36,7 @@ const enterData = async (data, navigate) => {
 }
 
 const loggedInUser = async () => {
-    const response = await axios.get('http://localhost:8000/loggedInData', {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/loggedInData`, {
         withCredentials: true
     });
 
@@ -49,7 +45,7 @@ const loggedInUser = async () => {
 
 const logoutUser = async () => {
     try {
-        const response = await axios.get('http://localhost:8000/logOut', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logOut`, {
             withCredentials: true
         });
         console.log(response.data);
@@ -61,7 +57,7 @@ const logoutUser = async () => {
 
 const getOutput = async (data, navigate) => {
     try {
-        const response = await axios.post('http://localhost:8000/getOutput', data, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/getOutput`, data, {
             withCredentials: true
         });
         return response.data;
@@ -76,7 +72,7 @@ const getOutput = async (data, navigate) => {
 
 const getVerdict = async (data, navigate) => {
     try {
-        const response = await axios.post('http://localhost:8000/getVerdict', data, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/getVerdict`, data, {
             withCredentials: true
         });
         if (response?.status === 200) {
@@ -95,7 +91,7 @@ const getVerdict = async (data, navigate) => {
 
 const getAIReview = async (data,navigate) => {
     try {
-        const response = await axios.post('http://localhost:8000/aiReview', data, {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/aiReview`, data, {
             withCredentials: true
         });
         return response.data;
@@ -104,14 +100,14 @@ const getAIReview = async (data,navigate) => {
             alert("Please Enter to get your Code's AI review");
             navigate('/enter');
         } else {
-            alert(error.response?.data || "Something went wrong");
+            alert("Something went wrong");
         }
     }
 }
 
 const getProblems = async (navigate) => {
     try {
-        const response = await axios.get('http://localhost:8000/getProblems', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getProblems`, {
             withCredentials: true
         });
         // console.log(response.data);
@@ -125,7 +121,7 @@ const getProblems = async (navigate) => {
 
 const getSubmissions = async (navigate) => {
     try {
-        const response = await axios.get('http://localhost:8000/getSubmissions', {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getSubmissions`, {
             withCredentials: true
         });
         return response.data;
@@ -143,7 +139,7 @@ const getSubmissions = async (navigate) => {
 
 const getParticularProblem = async (code, navigate) => {
     try {
-        const response = await axios.get(`http://localhost:8000/getParticularProblem/${code}`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getParticularProblem/${code}`, {
             withCredentials: true
         });
         if (response.data) {
@@ -158,7 +154,7 @@ const getParticularProblem = async (code, navigate) => {
 
 const getParticularTestCase = async (code) => {
     try {
-        const response = await axios.get(`http://localhost:8000/getParticularTestCase/${code}`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getParticularTestCase/${code}`, {
             withCredentials: true
         });
         if (response.data) {

@@ -8,7 +8,8 @@ function setUser(user) {
 function getUser(token){
     if(!token) return null;
     try {
-        return jwt.verify(token,process.env.SECRET_KEY);
+        const user = jwt.verify(token,process.env.SECRET_KEY);
+        return user;
     } catch (error) {
         return null;
     }

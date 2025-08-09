@@ -1,7 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import fs from 'fs'
-
+import 'dotenv/config'
 
 import generateFile from './generateFile.js'
 import generateInputFile from './generateInputFile.js'
@@ -97,9 +97,7 @@ app.post("/getVerdict", async (req, res) => {
     }
 
 })
-
-const PORT = 8400;
-
+const PORT = process.env.PORT || 8400;
 app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}!`);
 });

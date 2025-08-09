@@ -10,7 +10,6 @@ async function restrictToLoggedinUserOnly (req, res, next) {
       return res.status(401).json({ message: "Not logged in" });
     }
     const user = getUser(token);
-
     req.user = user;
     // creating a temporary method in the request object only at the backend.
     
