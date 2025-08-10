@@ -24,11 +24,7 @@ const enterData = async (data, navigate) => {
         });
         alert(response.data);
 
-        window.addEventListener("popstate", () => {
-            window.location.reload();
-        }, { once: true });
-
-        window.history.back();
+        window.location.href = document.referrer || "/";
     } catch (error) {
         if (error.response?.status === 409) {
             alert(error.response.data);
