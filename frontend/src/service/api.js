@@ -24,14 +24,17 @@ const enterData = async (data, navigate) => {
         });
         alert(response.data);
 
-        window.location.href = "/";
+        window.history.back();
+        setTimeout(() => {
+            window.location.reload();
+        }, 100);
     } catch (error) {
         if (error.response?.status === 409) {
             alert(error.response.data);
         } else {
             alert(error.response?.data || "Something went wrong");
         }
-        window.location.href = "/";
+        // window.location.href = "/";
     }
 }
 
