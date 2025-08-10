@@ -60,8 +60,8 @@ async function handleUserEnter(req, res) {
 
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "strict",
+            secure: true,       // must be true on HTTPS in production
+            sameSite: "none",   // must be 'none' for cross-site cookies
             path: "/"
         });
 
@@ -133,8 +133,8 @@ async function handleGetVerdict(req, res) {
 
         testcase = await Testcase.findOne({ problemCode: id });
         problem = await Problem.findOne({ code: id });
-        fulluserWhoSubmitted = await user.findOne({userId: userWhoSubmitted.id});
-        
+        fulluserWhoSubmitted = await user.findOne({ userId: userWhoSubmitted.id });
+
         newRequestBody = {
             language: "cpp",
             testcase,
