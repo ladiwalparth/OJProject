@@ -16,7 +16,7 @@ import Submissions from './components/Submissions/Submissions.jsx'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      <Route path='/' loader={loggedInUser} element={<Layout />}>
+      <Route path='https://oj-project-indol.vercel.app' loader={loggedInUser} element={<Layout />}>
         <Route path='' element={<Home />} />
         <Route path='/register' element={<Register />} />
         <Route path='/enter' element={<Enter />} />
