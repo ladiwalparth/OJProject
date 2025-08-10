@@ -24,7 +24,7 @@ const enterData = async (data, navigate) => {
         });
         alert(response.data);
 
-        window.location.href = document.referrer || "/";
+        window.location.href = "/";
     } catch (error) {
         if (error.response?.status === 409) {
             alert(error.response.data);
@@ -48,7 +48,7 @@ const logoutUser = async () => {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logOut`, {
             withCredentials: true
         });
-        window.location.reload();
+        window.location.href = "/";
     } catch (error) {
         alert(error.response?.data || "Something went wrong");
     }
