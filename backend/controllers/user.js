@@ -89,13 +89,12 @@ async function handleLoggedInUser(req, res) {
 async function handleLogOut(req, res) {
     try {
 
-        res.cookie("token", token, {
+        res.clearCookie("token", {
             httpOnly: true,
             secure: true,       // must be true on HTTPS in production
             sameSite: "none",   // must be 'none' for cross-site cookies
             path: "/"
         });
-
 
         return res.status(200).send("cookie cleared successfully");
 
