@@ -24,14 +24,14 @@ const enterData = async (data, navigate) => {
         });
         alert(response.data);
 
-        window.location.href = "http://localhost:5173/";
+        window.location.href = "/";
     } catch (error) {
         if (error.response?.status === 409) {
             alert(error.response.data);
         } else {
             alert(error.response?.data || "Something went wrong");
         }
-        // window.location.href = "http://localhost:5173/";
+        window.location.href = "/";
     }
 }
 
