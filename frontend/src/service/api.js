@@ -24,10 +24,11 @@ const enterData = async (data, navigate) => {
         });
         alert(response.data);
 
-        window.history.back();
-        setTimeout(() => {
+        window.addEventListener("popstate", () => {
             window.location.reload();
-        }, 100);
+        }, { once: true });
+
+        window.history.back();
     } catch (error) {
         if (error.response?.status === 409) {
             alert(error.response.data);
@@ -92,7 +93,7 @@ const getVerdict = async (data, navigate) => {
     }
 }
 
-const getAIReview = async (data,navigate) => {
+const getAIReview = async (data, navigate) => {
     try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/aiReview`, data, {
             withCredentials: true
