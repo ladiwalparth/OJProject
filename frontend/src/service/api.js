@@ -48,9 +48,7 @@ const logoutUser = async () => {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logOut`, {
             withCredentials: true
         });
-        setTimeout(() => {
-            window.location.reload();
-        }, 100);
+        window.location.reload();
     } catch (error) {
         alert(error.response?.data || "Something went wrong");
     }
