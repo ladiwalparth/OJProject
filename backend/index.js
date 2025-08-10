@@ -11,7 +11,14 @@ connectionDB();
 seedProblems();
 seedTestCases();
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://oj-project-m8dy.vercel.app/',
+        'http://localhost:5173'
+    ],
+    credentials: true
+}));
+
 
 
 app.use(express.json());
