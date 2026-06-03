@@ -11,6 +11,7 @@ import axios from 'axios';
 import { GoogleGenAI } from "@google/genai";
 import 'dotenv/config';
 
+
 async function handleUserRegister(req, res) {
   try {
     const { fullName, email, password, dob, userId } = req.body;
@@ -168,7 +169,40 @@ async function handleAIReview(req, res) {
     });
     return res.status(200).json({ output: response.text });
   } catch (error) {
-    return res.status(500).send('Error in AI-review');
+  console.log("AI error:", error?.message);
+  return res.status(500).json({ output: 'AI error: ' + (error?.message || 'unknown') });
+}
+}
+
+async function handleExplainError(req, res) {
+  const { code, detail } = req.body;
+  if (!detail || detail.trim() === '') {
+    return res.status(400).json({ output: "No error to explain — submit something that fails to compile or crashes first." });
+  }
+  try {
+    const prompt = `A student's C++ submission produced this compiler/runtime error.
+
+ERROR:
+${detail}
+
+THEIR CODE:
+${code}
+
+Explain in markdown as 2-4 short numbered points:
+1. What this error means in plain English.
+2. The most likely line or cause in their code.
+3. How to fix it conceptually.
+Do NOT rewrite the full corrected program — point them to the fix.`;
+
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+    return res.status(200).json({ output: response.text });
+  } catch (error) {
+    console.log("explain error:", error?.message);
+    return res.status(500).json({ output: 'AI error: ' + (error?.message || 'unknown') });
   }
 }
 
@@ -176,5 +210,6 @@ export {
   handleUserRegister, handleUserEnter, handleLoggedInUser, handleLogOut,
   handleOutput, handleGetVerdict, seedProblems, seedTestCases,
   handleGetProblems, handleGetSubmissions, handleGetParticularProblem,
-  handleGetParticularTestCase, handleAIReview
-};
+  handleGetParticularTestCase, handleAIReview, handleComplexityAnalysis,
+  handleExplainError
+}

@@ -15,6 +15,7 @@ router.get('/loggedInData', handleLoggedInUser);
 router.get('/logOut', handleLogOut);
 
 router.post('/aiReview',restrictToLoggedinUserOnly,handleAIReview);
+router.post('/aiExplainError', handleExplainError);
 // to be imported from controllers
 
 export default router

@@ -158,6 +158,15 @@ const getParticularTestCase = async (code) => {
     }
 }
 
+const getExplainError = async (data, navigate) => {
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/aiExplainError`, data, { withCredentials: true });
+    return res.data; // { output }
+  } catch (error) {
+    if (error.response?.status === 401) { alert("Please Enter first"); navigate('/enter'); }
+    return { output: 'Could not explain the error.' };
+  }
+};
 
 
-export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getAIReview, getProblems, getSubmissions, getParticularProblem, getParticularTestCase };
+export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getAIReview, getProblems, getSubmissions, getParticularProblem, getParticularTestCase, getExplainError };

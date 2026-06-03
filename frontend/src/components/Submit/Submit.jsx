@@ -3,7 +3,7 @@ import Editor from '@monaco-editor/react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Markdown from 'react-markdown';
 import {
-  getOutput, getVerdict, getAIReview,
+  getOutput, getVerdict, getAIReview, getComplexityAnalysis, getExplainError,
   getParticularProblem, getParticularTestCase,
 } from '../../service/api';
 
@@ -58,6 +58,14 @@ const Submit = () => {
     setReview(res?.output ?? 'Could not get a review.');
     setLoading('');
   };
+
+  const handleExplainError = async () => {
+  setLoading('explain');
+  const detail = verdict?.detail || output || '';
+  const res = await getExplainError({ code, detail }, navigate);
+  setReview(res?.output ?? 'Could not explain the error.');
+  setLoading('');
+};
 
   const verdictStyle = (v) => {
     if (v === 'Accepted') return 'bg-green-500/15 border-green-500 text-green-300';
@@ -117,6 +125,9 @@ const Submit = () => {
           </button>
           <button onClick={handleAIReview} disabled={!!loading} className={`${btn} bg-purple-600 hover:bg-purple-500`}>
             {loading === 'ai' ? 'Reviewing…' : 'AI Review'}
+          </button>
+          <button onClick={handleExplainError} disabled={!!loading} className={`${btn} bg-rose-600 hover:bg-rose-500`}>
+            {loading === 'explain' ? 'Explaining…' : 'Explain Error'}
           </button>
           <Link to="/Submissions" className={`${btn} bg-slate-700 hover:bg-slate-600 ml-auto`}>My Submissions</Link>
         </div>
