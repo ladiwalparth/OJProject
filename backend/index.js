@@ -4,24 +4,21 @@ import 'dotenv/config';
 import { connectionDB } from './database/db.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { seedProblems,seedTestCases } from './controllers/user.js';
+import { seedProblems, seedTestCases } from './controllers/user.js';
+
 const app = express();
 
-connectionDB();
-seedProblems();
-seedTestCases();
-
-app.use(cors({
-    origin: true,
-    credentials: true
-}));
-
-
-
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/", router);
 
-app.listen(process.env.PORT, ()=>{
+async function start() {
+  await connectionDB();
+  await seedProblems();
+  await seedTestCases();
+  app.listen(process.env.PORT, () => {
     console.log(`server is running on port ${process.env.PORT}`);
-})
+  });
+}
+start();
