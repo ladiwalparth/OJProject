@@ -1,15 +1,15 @@
-import React from 'react'
-import {Outlet} from 'react-router-dom'
-import Header from './components/Header/Header.jsx'
-import Footer from './components/Footer/Footer.jsx'
-const Layout = () => {
-  return (
-    <div className="w-full min-h-screen px-[30px] py-[50px]">
-      <Header/>
-      <Outlet/>
-      <Footer/>
-    </div>
-  )
-}
+import { Outlet } from 'react-router-dom';
+import Header from './components/Header/Header.jsx';
+import Footer from './components/Footer/Footer.jsx';
 
-export default Layout
+const Layout = () => (
+  <div className="min-h-screen bg-slate-900 text-slate-200">
+    <div className="max-w-6xl mx-auto px-5 py-6">
+      <Header />
+      <main className="mt-6"><Outlet /></main>
+      <Footer />
+    </div>
+  </div>
+);
+
+export default Layout;

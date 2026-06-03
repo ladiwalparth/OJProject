@@ -1,45 +1,35 @@
-import { Link, useNavigate } from "react-router-dom"
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { enterData } from '../../service/api';
 
-import { enterData } from "../../service/api";
 const Enter = () => {
-  
   const navigate = useNavigate();
-  
-  
+  const [showPw, setShowPw] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = { userId: e.target.userId.value, password: e.target.password.value };
+    try { await enterData(formData, navigate); } catch (err) { console.log(err.message); }
+  };
 
-    const userId = e.target.userId.value;
-    const password = e.target.password.value;
+  const field = "w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder-slate-500 px-4 py-3 outline-none focus:border-indigo-500 transition";
 
-    const formData = {
-      userId,
-      password
-    }
-
-    try {
-
-      await enterData(formData,navigate);
-      
-
-    } catch (error) {
-
-      console.log(error.message);
-    }
-  }
   return (
-    <div className="mt-[12px] h-[500px] w-full flex flex-col justify-center items-center">
-      <div className="text-3xl text-[#323754] mb-3 border border-black rounded-md py-3 px-10 font-bold"> Enter </div>
-      <form onSubmit={handleSubmit} className="rounded-xl h-[300px] w-[40%] shadow-lg/50 flex flex-col p-8 gap-3">
-        <input name="userId" placeholder="USER ID" className="h-full w-full border border-black rounded-md text-3xl p-2.5" required />
-        <input name="password" placeholder="PASSWORD" className="h-full w-full border border-black rounded-md text-3xl p-2.5" required />
-        <button className="h-full w-full border border-black rounded-md text-3xl p-2.5 text-white bg-[#323754]">Submit</button>
+    <div className="flex flex-col items-center justify-center py-16">
+      <h1 className="text-2xl font-bold text-white mb-6">Welcome back</h1>
+      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-800/50 p-8 flex flex-col gap-4">
+        <input name="userId" placeholder="User ID" className={field} required />
+        <div className="relative">
+          <input name="password" type={showPw ? "text" : "password"} placeholder="Password" className={field} required />
+          <button type="button" onClick={() => setShowPw(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 hover:text-slate-200">
+            {showPw ? "Hide" : "Show"}
+          </button>
+        </div>
+        <button className="rounded-md bg-indigo-600 hover:bg-indigo-500 py-3 font-semibold text-white transition">Enter</button>
       </form>
-      <Link to='/register' className='text-xl mt-2 text-[#3427df]'>
-        Don't have an account? Register
-      </Link>
+      <Link to="/register" className="mt-4 text-indigo-400 hover:text-indigo-300">Don't have an account? Register</Link>
     </div>
-  )
-}
+  );
+};
 
-export default Enter
+export default Enter;

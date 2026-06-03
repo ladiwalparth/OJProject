@@ -1,56 +1,44 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import {uploadData} from '../../service/api.js'
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { uploadData } from '../../service/api.js';
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [showPw, setShowPw] = useState(false);
 
-    const navigate = useNavigate();
-    
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = {
+      fullName: e.target.fullName.value,
+      email: e.target.email.value,
+      password: e.target.password.value,
+      dob: e.target.dob.value,
+      userId: e.target.userId.value,
+    };
+    try { await uploadData(formData, navigate); } catch (err) { console.log(err.message); }
+  };
 
-        const fullName = e.target.fullName.value;
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        const dob = e.target.dob.value;
-        const userId = e.target.userId.value;
+  const field = "w-full rounded-md border border-slate-600 bg-slate-800 text-slate-100 placeholder-slate-500 px-4 py-3 outline-none focus:border-indigo-500 transition";
 
-        const formData = {
-            fullName,
-            email,
-            password,
-            dob,
-            userId
-        }
-        
-        try {
-            
-            await uploadData(formData,navigate);
-
-        } catch (error) {
-
-            console.log(error.message);
-        }
-    }
-    
-    return (
-        <div className="mt-[50px] h-[625px] w-full flex flex-col justify-center items-center">
-            <div className="text-3xl text-[#323754] mb-3 border border-black rounded-md py-3 px-6 font-bold"> Register </div>
-
-            <form onSubmit={handleSubmit} className="rounded-xl h-[500px] w-[40%] shadow-lg/50 flex flex-col p-8 gap-3">
-                <input name="fullName" placeholder="FULL NAME" className="h-full w-full border border-black rounded-md text-3xl p-2.5" required/>
-                <input name="email" type="email" placeholder="EMAIL" className="h-full w-full border border-black rounded-md text-3xl p-2.5" required/>
-                <input name="password" placeholder="PASSWORD" className="h-full w-full border border-black rounded-md text-3xl p-2.5" required/>
-                <input name="dob" placeholder="DATE OF BIRTH (YYYY-MM-DD)" className="h-full w-full border border-black rounded-md text-3xl p-2.5" pattern="\d{4}-\d{2}-\d{2}" required />
-                <input name="userId" placeholder="USER ID" className="h-full w-full border border-black rounded-md text-3xl p-2.5" required/>
-                <button className="h-full w-full border border-black rounded-md text-3xl p-2.5 text-white bg-[#323754]">Submit</button>
-            </form>
-
-            <Link to='/enter' className='text-xl mt-2 text-[#3427df]'>
-                Already a user? Enter
-            </Link>
+  return (
+    <div className="flex flex-col items-center justify-center py-10">
+      <h1 className="text-2xl font-bold text-white mb-6">Create your account</h1>
+      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-800/50 p-8 flex flex-col gap-4">
+        <input name="fullName" placeholder="Full name" className={field} required />
+        <input name="email" type="email" placeholder="Email" className={field} required />
+        <div className="relative">
+          <input name="password" type={showPw ? "text" : "password"} placeholder="Password" className={field} required />
+          <button type="button" onClick={() => setShowPw(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-slate-400 hover:text-slate-200">
+            {showPw ? "Hide" : "Show"}
+          </button>
         </div>
-    )
-}
+        <input name="dob" type="date" className={field} required />
+        <input name="userId" placeholder="User ID" className={field} required />
+        <button className="rounded-md bg-indigo-600 hover:bg-indigo-500 py-3 font-semibold text-white transition">Register</button>
+      </form>
+      <Link to="/enter" className="mt-4 text-indigo-400 hover:text-indigo-300">Already a user? Enter</Link>
+    </div>
+  );
+};
 
-export default Register
+export default Register;

@@ -1,357 +1,385 @@
 [
-    {
-        "problemCode": "PRIME001",
-        "input": [
-            "1",
-            "2",
-            "10",
-            "17"
-        ],
-        "output": [
-            "false",
-            "true",
-            "false",
-            "true"
-        ]
-    },
-    {
-        "problemCode": "PALIN002",
-        "input": [
-            "121",
-            "123",
-            "0",
-            "1221"
-        ],
-        "output": [
-            "true",
-            "false",
-            "true",
-            "true"
-        ]
-    },
-    {
-        "problemCode": "FIB003",
-        "input": [
-            "0",
-            "1",
-            "5",
-            "7"
-        ],
-        "output": [
-            "[]",
-            "[0]",
-            "[0,1,1,2,3]",
-            "[0,1,1,2,3,5,8]"
-        ]
-    },
-    {
-        "problemCode": "FACT004",
-        "input": [
-            "0",
-            "1",
-            "5",
-            "7"
-        ],
-        "output": [
-            "1",
-            "1",
-            "120",
-            "5040"
-        ]
-    },
-    {
-        "problemCode": "SUMD005",
-        "input": [
-            "0",
-            "123",
-            "9999",
-            "1001"
-        ],
-        "output": [
-            "0",
-            "6",
-            "36",
-            "2"
-        ]
-    },
-    {
-        "problemCode": "VOWEL006",
-        "input": [
-            "hello",
-            "sky",
-            "AEIOU",
-            "ChatGPT"
-        ],
-        "output": [
-            "2",
-            "0",
-            "5",
-            "1"
-        ]
-    },
-    {
-        "problemCode": "REVNUM007",
-        "input": [
-            "123",
-            "100",
-            "7",
-            "456789"
-        ],
-        "output": [
-            "321",
-            "1",
-            "7",
-            "987654"
-        ]
-    },
-    {
-        "problemCode": "ARM008",
-        "input": [
-            "153",
-            "370",
-            "371",
-            "9474",
-            "123"
-        ],
-        "output": [
-            "true",
-            "true",
-            "true",
-            "true",
-            "false"
-        ]
-    },
-    {
-        "problemCode": "MAX009",
-        "input": [
-            "[1,2,3,4]",
-            "[-5,-2,-10]",
-            "[7]",
-            "[]"
-        ],
-        "output": [
-            "4",
-            "-2",
-            "7",
-            "null"
-        ]
-    },
-    {
-        "problemCode": "EVENODD010",
-        "input": [
-            "0",
-            "1",
-            "2",
-            "-3",
-            "-8"
-        ],
-        "output": [
-            "Even",
-            "Odd",
-            "Even",
-            "Odd",
-            "Even"
-        ]
-    },
-    {
-        "problemCode": "CHARCNT011",
-        "input": [
-            "hello world, l",
-            "AaAaAaA, a",
-            "mississippi, s"
-        ],
-        "output": [
-            "3",
-            "3",
-            "4"
-        ]
-    },
-    {
-        "problemCode": "LEAP012",
-        "input": [
-            "2000",
-            "1900",
-            "2024"
-        ],
-        "output": [
-            "true",
-            "false",
-            "true"
-        ]
-    },
-    {
-        "problemCode": "SUMN013",
-        "input": [
-            "5",
-            "1",
-            "0"
-        ],
-        "output": [
-            "15",
-            "1",
-            "0"
-        ]
-    },
-    {
-        "problemCode": "SWAP014",
-        "input": [
-            "5, 10",
-            "-3, 7",
-            "0, 0"
-        ],
-        "output": [
-            "10, 5",
-            "7, -3",
-            "0, 0"
-        ]
-    },
-    {
-        "problemCode": "SQUARE015",
-        "input": [
-            "16",
-            "14",
-            "1"
-        ],
-        "output": [
-            "true",
-            "false",
-            "true"
-        ]
-    },
-    {
-        "problemCode": "REVSTR016",
-        "input": [
-            "hello",
-            "A man",
-            ""
-        ],
-        "output": [
-            "olleh",
-            "nam A",
-            ""
-        ]
-    },
-    {
-        "problemCode": "DEDUP017",
-        "input": [
-            "[1,2,2,3,4,4,5]",
-            "[5,5,5,5]",
-            "[]"
-        ],
-        "output": [
-            "[1,2,3,4,5]",
-            "[5]",
-            "[]"
-        ]
-    },
-    {
-        "problemCode": "ANAGRAM018",
-        "input": [
-            "listen, silent",
-            "Triangle, Integral",
-            "hello, world"
-        ],
-        "output": [
-            "true",
-            "true",
-            "false"
-        ]
-    },
-    {
-        "problemCode": "EVENSUM019",
-        "input": [
-            "[1,2,3,4,5,6]",
-            "[1,3,5]",
-            "[]"
-        ],
-        "output": [
-            "12",
-            "0",
-            "0"
-        ]
-    },
-    {
-        "problemCode": "SECLARG020",
-        "input": [
-            "[3, 5, 2, 9, 5]",
-            "[7, 7, 7]",
-            "[1]"
-        ],
-        "output": [
-            "5",
-            "null",
-            "null"
-        ]
-    },
-    {
-        "problemCode": "MATRIX021",
-        "input": [
-            "[[1,2,3],[4,5,6]]",
-            "[[1]]",
-            "[[1,2],[3,4],[5,6]]"
-        ],
-        "output": [
-            "[[1,4],[2,5],[3,6]]",
-            "[[1]]",
-            "[[1,3,5],[2,4,6]]"
-        ]
-    },
-    {
-        "problemCode": "MISSNUM022",
-        "input": [
-            "[1,2,4,5]",
-            "[2,3,1,5,6,7,8,9,10]",
-            "[2]"
-        ],
-        "output": [
-            "3",
-            "4",
-            "1"
-        ]
-    },
-    {
-        "problemCode": "SORT012023",
-        "input": [
-            "[0,2,1,2,0]",
-            "[2,2,2]",
-            "[1,0,0,1]"
-        ],
-        "output": [
-            "[0,0,1,2,2]",
-            "[2,2,2]",
-            "[0,0,1,1]"
-        ]
-    },
-    {
-        "problemCode": "LONGWORD024",
-        "input": [
-            "The quick brown fox jumped",
-            "Hello there, General Kenobi!",
-            "",
-            "One  two   three"
-        ],
-        "output": [
-            "jumped",
-            "General",
-            "",
-            "three"
-        ]
-    },
-    {
-        "problemCode": "PAREN025",
-        "input": [
-            "()[]{}",
-            "([{}])",
-            "(]",
-            "((())",
-            ""
-        ],
-        "output": [
-            "true",
-            "true",
-            "false",
-            "false",
-            "true"
-        ]
-    }
+  {
+    "problemCode": "SUM_PAIR",
+    "input": [
+      "1000000000 1000000000",
+      "-5 5",
+      "0 0",
+      "-1000000000 -1000000000",
+      "7 -3",
+      "123456789 876543211"
+    ],
+    "output": [
+      "2000000000",
+      "0",
+      "0",
+      "-2000000000",
+      "4",
+      "1000000000"
+    ]
+  },
+  {
+    "problemCode": "MAX_OF_THREE",
+    "input": [
+      "1 2 3",
+      "9 4 7",
+      "-1 -2 -3",
+      "5 5 5",
+      "1000000000 -1000000000 0"
+    ],
+    "output": [
+      "3",
+      "9",
+      "-1",
+      "5",
+      "1000000000"
+    ]
+  },
+  {
+    "problemCode": "PARITY",
+    "input": [
+      "0",
+      "1",
+      "-3",
+      "-4",
+      "1000000000",
+      "999999999"
+    ],
+    "output": [
+      "Even",
+      "Odd",
+      "Odd",
+      "Even",
+      "Even",
+      "Odd"
+    ]
+  },
+  {
+    "problemCode": "FACTORIAL",
+    "input": [
+      "0",
+      "1",
+      "5",
+      "10",
+      "20"
+    ],
+    "output": [
+      "1",
+      "1",
+      "120",
+      "3628800",
+      "2432902008176640000"
+    ]
+  },
+  {
+    "problemCode": "STR_REVERSE",
+    "input": [
+      "hello",
+      "a",
+      "racecar",
+      "abcdef"
+    ],
+    "output": [
+      "olleh",
+      "a",
+      "racecar",
+      "fedcba"
+    ]
+  },
+  {
+    "problemCode": "VOWEL_COUNT",
+    "input": [
+      "Education",
+      "sky",
+      "AEIOU",
+      "programming"
+    ],
+    "output": [
+      "5",
+      "0",
+      "5",
+      "3"
+    ]
+  },
+  {
+    "problemCode": "FIB_NTH",
+    "input": [
+      "0",
+      "1",
+      "2",
+      "10",
+      "50",
+      "90"
+    ],
+    "output": [
+      "0",
+      "1",
+      "1",
+      "55",
+      "12586269025",
+      "2880067194370816120"
+    ]
+  },
+  {
+    "problemCode": "GCD_TWO",
+    "input": [
+      "12 18",
+      "100 10",
+      "17 5",
+      "0 5",
+      "48 36"
+    ],
+    "output": [
+      "6",
+      "10",
+      "1",
+      "5",
+      "12"
+    ]
+  },
+  {
+    "problemCode": "PALINDROME",
+    "input": [
+      "racecar",
+      "hello",
+      "a",
+      "abba",
+      "abc"
+    ],
+    "output": [
+      "YES",
+      "NO",
+      "YES",
+      "YES",
+      "NO"
+    ]
+  },
+  {
+    "problemCode": "SUM_TO_N",
+    "input": [
+      "1",
+      "10",
+      "100",
+      "1000000",
+      "0"
+    ],
+    "output": [
+      "1",
+      "55",
+      "5050",
+      "500000500000",
+      "0"
+    ]
+  },
+  {
+    "problemCode": "ARRAY_SUM",
+    "input": [
+      "5 1 2 3 4 5",
+      "1 -100",
+      "4 1000000000 1000000000 1000000000 1000000000"
+    ],
+    "output": [
+      "15",
+      "-100",
+      "4000000000"
+    ]
+  },
+  {
+    "problemCode": "COUNT_DISTINCT",
+    "input": [
+      "5 1 2 2 3 3",
+      "4 7 7 7 7",
+      "6 1 2 3 4 5 6"
+    ],
+    "output": [
+      "3",
+      "1",
+      "6"
+    ]
+  },
+  {
+    "problemCode": "SECOND_LARGEST",
+    "input": [
+      "5 3 1 4 1 5",
+      "3 2 2 2",
+      "6 10 20 30 40 50 60",
+      "2 5 7"
+    ],
+    "output": [
+      "4",
+      "NONE",
+      "50",
+      "5"
+    ]
+  },
+  {
+    "problemCode": "LINEAR_INDEX",
+    "input": [
+      "5 10 20 30 40 50 30",
+      "4 1 2 3 4 9",
+      "3 5 5 5 5"
+    ],
+    "output": [
+      "2",
+      "-1",
+      "0"
+    ]
+  },
+  {
+    "problemCode": "ANAGRAM",
+    "input": [
+      "listen silent",
+      "hello world",
+      "abc cba",
+      "aab abb"
+    ],
+    "output": [
+      "YES",
+      "NO",
+      "YES",
+      "NO"
+    ]
+  },
+  {
+    "problemCode": "SORT_ASC",
+    "input": [
+      "5 5 3 1 4 2",
+      "1 42",
+      "4 -1 -5 3 0"
+    ],
+    "output": [
+      "1 2 3 4 5",
+      "42",
+      "-5 -1 0 3"
+    ]
+  },
+  {
+    "problemCode": "PRIME_CHECK",
+    "input": [
+      "1",
+      "2",
+      "17",
+      "100",
+      "7919",
+      "999999999989"
+    ],
+    "output": [
+      "Not Prime",
+      "Prime",
+      "Prime",
+      "Not Prime",
+      "Prime",
+      "Prime"
+    ]
+  },
+  {
+    "problemCode": "COUNT_PRIMES",
+    "input": [
+      "10",
+      "1",
+      "100",
+      "1000"
+    ],
+    "output": [
+      "4",
+      "0",
+      "25",
+      "168"
+    ]
+  },
+  {
+    "problemCode": "POWER_MOD",
+    "input": [
+      "2 10 1000000007",
+      "3 5 100",
+      "7 0 13",
+      "123456 789 1000000007"
+    ],
+    "output": [
+      "1024",
+      "43",
+      "1",
+      "182677862"
+    ]
+  },
+  {
+    "problemCode": "MAX_FREQUENCY",
+    "input": [
+      "5 1 2 2 3 3",
+      "6 4 4 4 1 1 9",
+      "1 7"
+    ],
+    "output": [
+      "2",
+      "4",
+      "7"
+    ]
+  },
+  {
+    "problemCode": "LCS",
+    "input": [
+      "abcde ace",
+      "abc abc",
+      "abc def",
+      "aggtab gxtxayb"
+    ],
+    "output": [
+      "3",
+      "3",
+      "0",
+      "4"
+    ]
+  },
+  {
+    "problemCode": "KADANE",
+    "input": [
+      "9 -2 1 -3 4 -1 2 1 -5 4",
+      "5 -1 -2 -3 -4 -5",
+      "4 1 2 3 4"
+    ],
+    "output": [
+      "6",
+      "-1",
+      "10"
+    ]
+  },
+  {
+    "problemCode": "EDIT_DISTANCE",
+    "input": [
+      "horse ros",
+      "intention execution",
+      "abc abc",
+      "sunday saturday"
+    ],
+    "output": [
+      "3",
+      "5",
+      "0",
+      "3"
+    ]
+  },
+  {
+    "problemCode": "KNAPSACK01",
+    "input": [
+      "3 50 10 60 20 100 30 120",
+      "4 10 5 10 4 40 6 30 3 50"
+    ],
+    "output": [
+      "220",
+      "90"
+    ]
+  },
+  {
+    "problemCode": "COIN_CHANGE_MIN",
+    "input": [
+      "11 3 1 2 5",
+      "3 1 2",
+      "7 2 2 4"
+    ],
+    "output": [
+      "3",
+      "-1",
+      "-1"
+    ]
+  }
 ]

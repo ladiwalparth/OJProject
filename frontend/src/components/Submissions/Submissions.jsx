@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getSubmissions } from '../../service/api'
+import { getSubmissions } from '../../service/api';
+
+const vstyle = (v) =>
+  v === 'Accepted' ? 'bg-green-500/15 text-green-400'
+  : v === 'Wrong Answer' ? 'bg-red-500/15 text-red-400'
+  : v === 'Time Limit Exceeded' ? 'bg-amber-500/15 text-amber-400'
+  : 'bg-orange-500/15 text-orange-400';
+
 const Submissions = () => {
   const navigate = useNavigate();
   const [submissions, setSubmissions] = useState([]);
-  useEffect(() => {
-    const fetchSubmissions = async () => {
-      const data = await getSubmissions(navigate);
-      setSubmissions(data);
-    }
-    fetchSubmissions();
-  }, []);
+  useEffect(() => { (async () => setSubmissions(await getSubmissions(navigate) || []))(); }, []);
 
   return (
-    <div className="flex flex-col gap-2">
-      
-      {submissions && submissions.map(item => {
-        return <div key={item._id} className="text-2xl text-[#323754] font-semibold h-10 border-2 border-[#323754] px-3 flex justify-between items-center">
-          <div className="mx-5">ProblemName:  {item.problem}</div>
-          <div className="mx-5">Verdict:  {item.verdict}</div>
-        </div>
-      })}
-      {/* note if you are using curly brackets in map then you must use return, implicit 
-      return would not work then */}
+    <div className="flex flex-col gap-4">
+      <h1 className="text-2xl font-bold text-white">My Submissions</h1>
+      {submissions.length === 0 && <p className="text-slate-400">No submissions yet.</p>}
+      <div className="flex flex-col gap-2">
+        {submissions.map((item) => (
+          <div key={item._id} className="flex items-center justify-between rounded-lg border border-slate-700 bg-slate-800/50 px-5 py-4">
+            <span className="text-lg font-medium text-slate-200">{item.problem}</span>
+            <span className={`text-sm font-semibold px-3 py-1 rounded-full ${vstyle(item.verdict)}`}>{item.verdict}</span>
+          </div>
+        ))}
+      </div>
     </div>
-  )
+  );
+};
 
-}
-
-export default Submissions
+export default Submissions;
