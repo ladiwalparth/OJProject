@@ -53,11 +53,22 @@ const Submit = () => {
   };
 
   const handleAIReview = async () => {
-    setLoading('ai'); setVerdict(null);
-    const res = await getAIReview({ code }, navigate);
-    setReview(res?.output ?? 'Could not get a review.');
-    setLoading('');
-  };
+  setLoading('ai');
+  const v = verdict; // last submit result, may be null if they haven't submitted yet
+  const res = await getAIReview(
+    { code, id, verdict: v?.verdict, failedCase: v?.failedCase },
+    navigate
+  );
+  setReview(res?.output ?? 'Could not get a review.');
+  setLoading('');
+};
+
+const handleComplexity = async () => {
+  setLoading('complexity');
+  const res = await getComplexityAnalysis({ code, id }, navigate);
+  setReview(res?.output ?? 'Could not analyze complexity.');
+  setLoading('');
+};
 
   const handleExplainError = async () => {
   setLoading('explain');
@@ -125,6 +136,9 @@ const Submit = () => {
           </button>
           <button onClick={handleAIReview} disabled={!!loading} className={`${btn} bg-purple-600 hover:bg-purple-500`}>
             {loading === 'ai' ? 'Reviewing…' : 'AI Review'}
+          </button>
+          <button onClick={handleComplexity} disabled={!!loading} className={`${btn} bg-indigo-600 hover:bg-indigo-500`}>
+            {loading === 'complexity' ? 'Analyzing…' : 'Analyze Complexity'}
           </button>
           <button onClick={handleExplainError} disabled={!!loading} className={`${btn} bg-rose-600 hover:bg-rose-500`}>
             {loading === 'explain' ? 'Explaining…' : 'Explain Error'}

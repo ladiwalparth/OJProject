@@ -157,21 +157,73 @@ async function handleGetParticularTestCase(req, res) {
 }
 
 async function handleAIReview(req, res) {
-  const { code } = req.body;
+  const { code, id, verdict, failedCase } = req.body;
   if (!code || code.trim() === '') {
-    return res.status(400).json({ success: false, error: "Empty code" });
+    return res.status(400).json({ output: "Please write some code first." });
   }
   try {
+    const problem = id ? await Problem.findOne({ code: id }) : null;
+
+    const context = [
+      problem ? `PROBLEM: ${problem.name}\n${problem.statement}` : '',
+      verdict ? `VERDICT: ${verdict}` : '',
+      failedCase ? `FAILING TEST CASE: ${JSON.stringify(failedCase)}` : '',
+    ].filter(Boolean).join('\n\n');
+
+    const prompt = `You are a competitive-programming mentor reviewing a C++ submission.
+
+${context}
+
+SUBMITTED CODE:
+${code}
+
+Give a short review as 3-5 numbered points (each 10-18 words). Focus on WHY the code
+produces the verdict above and the specific bug or inefficiency you can see.
+STRICT RULES:
+- Hints and direction only. Do NOT write the corrected code or the full solution.
+- Do not reveal the exact answer; nudge the student toward it.
+- If the verdict is Accepted (or absent), instead suggest ONE improvement (clarity or efficiency).
+Respond in markdown.`;
+
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
-      contents: `You are a code-review expert. Give a short 4-5 line review of this code, each line 10-15 words, numbered, with suggestions only — do NOT give the full solution. Code: ${code}`,
+      contents: prompt,
     });
     return res.status(200).json({ output: response.text });
   } catch (error) {
-  console.log("AI error:", error?.message);
-  return res.status(500).json({ output: 'AI error: ' + (error?.message || 'unknown') });
+    console.log("AI review error:", error?.message);
+    return res.status(500).json({ output: 'Error generating review.' });
+  }
 }
+
+async function handleComplexityAnalysis(req, res) {
+  const { code } = req.body;
+  if (!code || code.trim() === '') {
+    return res.status(400).json({ output: "Please write some code first." });
+  }
+  try {
+    const prompt = `Analyze the time and space complexity of this C++ code.
+
+CODE:
+${code}
+
+Respond in markdown with exactly these three bullet points:
+- **Time complexity:** Big-O with a one-line reason
+- **Space complexity:** Big-O with a one-line reason
+- **One optimization:** a single concrete suggestion
+Keep it under 6 lines. Do NOT rewrite the full solution.`;
+
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
+    return res.status(200).json({ output: response.text });
+  } catch (error) {
+    console.log("complexity error:", error?.message);
+    return res.status(500).json({ output: 'Error analyzing complexity.' });
+  }
 }
 
 async function handleExplainError(req, res) {

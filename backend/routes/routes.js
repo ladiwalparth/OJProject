@@ -13,6 +13,7 @@ router.get('/getParticularProblem/:id',handleGetParticularProblem);
 router.get('/getParticularTestCase/:id',handleGetParticularTestCase);
 router.get('/loggedInData', handleLoggedInUser);
 router.get('/logOut', handleLogOut);
+router.post('/aiComplexity', handleComplexityAnalysis);
 
 router.post('/aiReview',restrictToLoggedinUserOnly,handleAIReview);
 router.post('/aiExplainError', handleExplainError);

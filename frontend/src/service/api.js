@@ -81,21 +81,24 @@ const getVerdict = async (data, navigate) => {
 }
 
 const getAIReview = async (data, navigate) => {
-    try {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/aiReview`, data, {
-            withCredentials: true
-        });
-        return response.data;
-    } catch (error) {
-        if (error.response?.status === 401) {
-            alert("Please Enter to get your Code's AI review");
-            navigate('/enter');
-        } else {
-            alert("Something went wrong");
-        }
-    }
-}
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/aiReview`, data, { withCredentials: true });
+    return res.data; // { output }
+  } catch (error) {
+    if (error.response?.status === 401) { alert("Please Enter first"); navigate('/enter'); }
+    return { output: 'Could not get a review.' };
+  }
+};
 
+const getComplexityAnalysis = async (data, navigate) => {
+  try {
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/aiComplexity`, data, { withCredentials: true });
+    return res.data; // { output }
+  } catch (error) {
+    if (error.response?.status === 401) { alert("Please Enter first"); navigate('/enter'); }
+    return { output: 'Could not analyze complexity.' };
+  }
+};
 const getProblems = async (navigate) => {
     try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getProblems`, {
