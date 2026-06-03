@@ -36,12 +36,13 @@ const enterData = async (data, navigate) => {
 }
 
 const loggedInUser = async () => {
-    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/loggedInData`, {
-        withCredentials: true
-    });
-
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/loggedInData`, { withCredentials: true });
     return response.data.user;
-}
+  } catch {
+    return null; // backend unreachable / not logged in -> just render logged-out
+  }
+};
 
 const logoutUser = async () => {
     try {
@@ -70,22 +71,13 @@ const getOutput = async (data, navigate) => {
 }
 
 const getVerdict = async (data, navigate) => {
-    try {
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/getVerdict`, data, {
-            withCredentials: true
-        });
-        if (response?.status === 200) {
-            alert("Code Submitted Successfully!")
-            navigate('/Submissions')
-        }
-    } catch (error) {
-        if (error.response?.status === 401) {
-            alert("Please Enter to Submit");
-            navigate('/enter');
-        } else {
-            alert(error.response?.data || "Something went wrong");
-        }
-    }
+  try {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/getVerdict`, data, { withCredentials: true });
+    return response.data; // { verdict, failedCase?, detail? }
+  } catch (error) {
+    if (error.response?.status === 401) { alert("Please Enter to Submit"); navigate('/enter'); }
+    return { verdict: 'Error', detail: error.response?.data?.detail || 'Something went wrong' };
+  }
 }
 
 const getAIReview = async (data, navigate) => {

@@ -1,103 +1,80 @@
-import express from 'express'
-import cors from 'cors'
-import fs from 'fs'
-import 'dotenv/config'
+import express from 'express';
+import cors from 'cors';
+import fs from 'fs';
+import 'dotenv/config';
 
-import generateFile from './generateFile.js'
-import generateInputFile from './generateInputFile.js'
-import executeCpp from './executeCpp.js'
-
+import generateFile from './generateFile.js';
+import generateInputFile from './generateInputFile.js';
+import executeCpp from './executeCpp.js';
 
 const app = express();
-
-
-//middlewares
-app.use(cors({
-    origin: 'http://localhost:8000',
-    credentials: true
-}));
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    res.json({ online: 'compiler' });
+const cleanup = (paths) =>
+  paths.forEach((p) => { try { if (p && fs.existsSync(p)) fs.unlinkSync(p); } catch {} });
+
+app.get('/', (req, res) => res.json({ online: 'compiler' }));
+
+// Run with custom input
+app.post('/getOutput', async (req, res) => {
+  const { language = 'cpp', code, input } = req.body;
+  if (code === undefined) return res.status(400).json({ error: 'Empty code!' });
+  let filePath, inputfilePath, outPath;
+  try {
+    filePath = generateFile(language, code);
+    inputfilePath = generateInputFile(input || '');
+    try {
+      const result = await executeCpp(filePath, inputfilePath);
+      outPath = result.outPath;
+      return res.status(200).json({ output: result.stdout });
+    } catch (e) {
+      // show the user the compile/runtime/TLE message in the output box
+      return res.status(200).json({ output: e.detail || e.message, error: e.type || 'error' });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: String(error) });
+  } finally {
+    cleanup([filePath, inputfilePath, outPath]);
+  }
 });
 
-app.post("/getOutput", async (req, res) => {
+// Submit against hidden test cases
+app.post('/getVerdict', async (req, res) => {
+  const { language = 'cpp', testcase, code } = req.body;
+  if (!code) return res.status(400).json({ verdict: 'Error', detail: 'Empty code!' });
 
-    const { language = 'cpp', code, input } = req.body;
-    let filePath, inputfilePath, output, outpath;
-    if (code === undefined) {
-        return res.status(404).json({ success: false, error: "Empty code!" });
-    }
+  const inputString = (testcase?.input || []).join('\n');
+  let filePath, inputfilePath, outPath;
+  try {
+    filePath = generateFile(language, code);
+    inputfilePath = generateInputFile(inputString);
+
+    let result;
     try {
-        filePath = generateFile(language, code);
-        inputfilePath = generateInputFile(input);
-        const result = await executeCpp(filePath, inputfilePath);
-        output = result.stdout;
-        outpath = result.outPath;
-
-        return res.status(200).json({ filePath, output });
-    } catch (error) {
-        return res.status(500).json({ error: error });
-    } finally {
-        try {
-            if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            if (inputfilePath && fs.existsSync(inputfilePath)) fs.unlinkSync(inputfilePath);
-            if (outpath && fs.existsSync(outpath)) fs.unlinkSync(outpath);
-        } catch (cleanupErr) {
-            console.error("Error cleaning up files:", cleanupErr);
-        }
+      result = await executeCpp(filePath, inputfilePath);
+    } catch (e) {
+      if (e.type === 'CE') return res.status(200).json({ verdict: 'Compilation Error', detail: e.detail });
+      if (e.type === 'TLE') return res.status(200).json({ verdict: 'Time Limit Exceeded' });
+      if (e.type === 'RE') return res.status(200).json({ verdict: 'Runtime Error', detail: e.detail });
+      return res.status(200).json({ verdict: 'Error', detail: String(e.message || e) });
     }
+    outPath = result.outPath;
+
+    const expected = testcase?.output || [];
+    const actual = result.stdout.trim().split('\n');
+    for (let i = 0; i < expected.length; i++) {
+      if ((expected[i] ?? '').trim() !== (actual[i] ?? '').trim()) {
+        return res.status(200).json({ verdict: 'Wrong Answer', failedCase: i + 1 });
+      }
+    }
+    return res.status(200).json({ verdict: 'Accepted' });
+  } catch (error) {
+    return res.status(500).json({ verdict: 'Error', detail: String(error) });
+  } finally {
+    cleanup([filePath, inputfilePath, outPath]);
+  }
 });
 
-app.post("/getVerdict", async (req, res) => {
-    const { language, testcase, code } = req.body;
-    const inputString = testcase.input.join('\n');
-    // generate input file expects inputs as one string with each test case on new line.
-    let filePath, inputfilePath, output, outpath;
-    if (code === undefined) {
-        return res.status(404).json({ success: false, error: "Empty code!" });
-    }
-    try {
-        filePath = generateFile(language, code);
-        inputfilePath = generateInputFile(inputString);
-        const result = await executeCpp(filePath, inputfilePath);
-        output = result.stdout;
-        outpath = result.outPath;
-
-        let responseSent = false;
-        const expectedOutputs = testcase.output;
-        const actualOutputs = output.trim().split('\n');
-
-        expectedOutputs.forEach((expected, index) => {
-            const actual = actualOutputs[index] || '[no output]';
-            if (expected.trim() === actual.trim()) {
-                console.log(`Test Case ${index + 1}: passed`);
-            } else {
-                console.log(`Test Case ${index + 1}: Failed`);
-                if(responseSent==false){
-                    responseSent = true;
-                    return res.status(401).json({ success: false, error: `Test Case ${index + 1}: Failed`});
-                }
-                // doubt to ask ?????
-                // why running a full try block?
-            }
-        });
-        if(responseSent==false) return res.status(200).json({success: true});
-    } catch (error) {
-        return res.status(500).json({error: error});
-    } finally {
-        try {
-            if (filePath && fs.existsSync(filePath)) fs.unlinkSync(filePath);
-            if (inputfilePath && fs.existsSync(inputfilePath)) fs.unlinkSync(inputfilePath);
-            if (outpath && fs.existsSync(outpath)) fs.unlinkSync(outpath);
-        } catch (cleanupErr) {
-            console.error("Error cleaning up files:", cleanupErr);
-        }
-    }
-
-})
 const PORT = process.env.PORT || 8400;
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}!`);
-});
+app.listen(PORT, () => console.log(`Compiler listening on port ${PORT}!`));

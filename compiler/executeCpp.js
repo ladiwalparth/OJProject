@@ -1,48 +1,65 @@
 import { exec } from 'node:child_process';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from "url";
+import { fileURLToPath } from 'url';
 
-const __filePath = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filePath);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const outputPath = path.join(__dirname, 'outputs');
+if (!fs.existsSync(outputPath)) fs.mkdirSync(outputPath, { recursive: true });
 
-const outputPath = path.join(__dirname,'outputs');
+const TIME_LIMIT_S = 5;
+const MEMORY_LIMIT_KB = 262144; // 256 MB
 
-if(!fs.existsSync(outputPath)){
-    fs.mkdirSync(outputPath, {
-        recursive: true
-    })
-}
+const sh = (cmd, options = {}) =>
+  new Promise((resolve) => {
+    exec(cmd, options, (error, stdout, stderr) => resolve({ error, stdout, stderr }));
+  });
 
-const executeCpp = async (filePath,inputfilePath) => {
-    const jobId = path.basename(filePath).split('.')[0];
-    const outPath = path.join(outputPath,`${jobId}.out`);
-    // execute function takes 2 argument one is command which is compulsory and other is callback
-    // which is optional
-    return new Promise((resolve, reject)=>{
-        exec(`g++ ${filePath} -o ${outPath} && cd ${outputPath} && ./${jobId}.out < ${inputfilePath}`,(error, stdout, stderr) => {
-            if(error){
-                console.log(error);
-                reject({error, stderr});
-                // it makes a javascript object of error, stderr which we can use in the try catch block.
-                // error is the nodejs error object, not able to run any command
-                // stderr error we get on compilation like missing a semicolon etc.
-            }
-            if(stderr){
-                reject(stderr);
-            }
-            resolve({stdout,outPath});
-        });
-    });
-}; 
-// async function usage() {
-//     try {
-//         await = executeCpp(filePath);
-//     } catch (error) {
-//         console.log(error);
-//         // here error will be logged as a object with keys error and stderr
-//     }
-// }
+// strip the temp file path out of compiler messages (cleaner + no path leak)
+const clean = (text, filePath) => (text || '').split(filePath).join('solution.cpp');
+
+const executeCpp = async (filePath, inputfilePath) => {
+  const jobId = path.basename(filePath).split('.')[0];
+  const outPath = path.join(outputPath, `${jobId}.out`);
+
+  // 1) Compile
+  const compile = await sh(`g++ "${filePath}" -o "${outPath}" 2>&1`);
+  if (compile.error) {
+    const err = new Error('Compilation Error');
+    err.type = 'CE';
+    err.detail = clean(compile.stdout || 'Compilation failed', filePath);
+    throw err;
+  }
+
+  // 2) Run with memory + time limits
+  const runCmd = `ulimit -v ${MEMORY_LIMIT_KB}; timeout -s KILL ${TIME_LIMIT_S}s "${outPath}" < "${inputfilePath}"`;
+  const res = await sh(runCmd, {
+    shell: '/bin/sh',
+    maxBuffer: 1024 * 1024,
+    timeout: (TIME_LIMIT_S + 3) * 1000,
+    killSignal: 'SIGKILL',
+  });
+
+  if (res.error) {
+    const code = res.error.code;
+    const sig = res.error.signal;
+    // GNU timeout=124, SIGKILL=137, SIGTERM=143, plus Node's own timeout kill
+    const timedOut =
+      code === 124 || code === 137 || code === 143 ||
+      res.error.killed || sig === 'SIGKILL' || sig === 'SIGTERM';
+    if (timedOut) {
+      const err = new Error('Time Limit Exceeded');
+      err.type = 'TLE';
+      throw err;
+    }
+    const err = new Error('Runtime Error'); // segfault, memory-limit kill, etc.
+    err.type = 'RE';
+    err.detail = clean(res.stderr || `Process exited with code ${code}`, filePath);
+    throw err;
+  }
+
+  return { stdout: res.stdout, outPath };
+};
+
 export default executeCpp;
-
-// executeCpp compiler the file and stored the binary file outPath in the outputs folder.

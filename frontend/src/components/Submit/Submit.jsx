@@ -1,131 +1,157 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react';
 import Editor from '@monaco-editor/react';
-import { getOutput,getVerdict,getAIReview } from '../../service/api';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Markdown from 'react-markdown';
+import {
+  getOutput, getVerdict, getAIReview,
+  getParticularProblem, getParticularTestCase,
+} from '../../service/api';
 
-const Submit = () => {
-    const [code, setCode] = useState('');
-    const [input,setInput] = useState('');
-    const [output, setOutput] = useState('// Output');
-    const navigate = useNavigate();
-    const { id } = useParams();
-    const handleOnClick = async () => {
-        const data = {
-            language: 'cpp',
-            code,
-            input
-        }
-        const temp = await getOutput(data, navigate);
-        setOutput(temp.output);
-    }
-    const handleSubmit = async () => {
-        const data = {
-            code,
-            id
-        }
-        await getVerdict(data,navigate);
-    }
-    const handleAIReview = async () => {
-        const data = {
-            code
-        }
-        const temp = await getAIReview(data,navigate);
-        setOutput(temp.output);
-    }
-    return (
-        <div className="w-full h-screen py-2">
-            <div className="w-full h-full flex gap-3">
-
-                <div className="border-2 border-[#323754] w-full h-full">
-                    <Editor
-                        height="100%"
-                        width="100%"
-                        theme="vs"
-                        defaultLanguage="cpp"
-                        defaultValue="#include <bits/stdc++.h>
+const DEFAULT_CODE = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    
-    int t = <NoOfTestCases>;
+    // read input, print each answer on its own line
 
-    while(t--){
-    
-        // Your solution here and display each output in new line.
-
-        cout << <output> << '\n';
-    }
     return 0;
-}"
-                        value={code}
-                        onChange={(data) => setCode(data)}
-                        options={
-                            {
-                                fontSize: 20,
-                            }
-                        }
-                    />
-                    {/* monaco code editor directly give the changed value as the previous element we do not have to 
-                     do something like e.target.value in onChange event listener   */}
-                </div>
-                <div className="flex flex-col w-[55%] h-full gap-3">
-                    <div className="border-2 border-[#323754] w-full h-[40%] bg-gray-300 px-4">
-                        {/* <p style={{
-                            // fontFamily: '"Fira code", "Fira Mono", monospace',
-                            fontSize: 20,
-                            color: '#323754'
-                        }}>{output}</p> */}
-                        <Editor
-                            height="100%"
-                            width="100%"
-                            theme="vs"
-                            defaultLanguage="plaintext"
-                            defaultValue="// Enter Custom Input"
-                            value={input}
-                            onChange={(data) => setInput(data)}
-                            options={
-                                {
-                                    fontSize: 18,
-                                }
-                            }
-                        />
+}`;
 
-                    </div>
-                    <div className="border-2 border-[#323754] w-full h-[40%] bg-gray-300 px-4">
-                        {/* <p style={{
-                            // fontFamily: '"Fira code", "Fira Mono", monospace',
-                            fontSize: 20,
-                            color: '#323754'
-                        }}>{output}</p> */}
-                        <Editor
-                            height="100%"
-                            width="100%"
-                            theme="vs"
-                            defaultLanguage="plaintext"
-                            defaultValue="// Output"
-                            value={output}
-                            onChange={(data) => setOutput(data)}
-                            options={
-                                {
-                                    fontSize: 18,
-                                }
-                            }
-                        />
+const Submit = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-                    </div>
-                    <div className="border-2 border-[#323754] w-full h-[50%] p-5 flex flex-col gap-3 justify-center">
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleOnClick}>Run</button>
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleSubmit}>Submit</button>
-                        <button className="w-full h-[40%] border border-black text-white bg-[#323754] rounded-lg cursor-pointer" style={{ fontSize: 27 }} onClick={handleAIReview}>AI review</button>
-                    </div>
+  const [problem, setProblem] = useState(null);
+  const [sample, setSample] = useState(null);
+  const [code, setCode] = useState(DEFAULT_CODE);
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
+  const [review, setReview] = useState('');
+  const [verdict, setVerdict] = useState(null);   // { verdict, failedCase?, detail? }
+  const [loading, setLoading] = useState('');     // 'run' | 'submit' | 'ai' | ''
+
+  useEffect(() => {
+    (async () => {
+      const p = await getParticularProblem(id, navigate);
+      const t = await getParticularTestCase(id);
+      if (p) setProblem(p);
+      if (t) setSample(t);
+    })();
+  }, [id]);
+
+  const handleRun = async () => {
+    setLoading('run'); setReview(''); setVerdict(null);
+    const res = await getOutput({ language: 'cpp', code, input }, navigate);
+    setOutput(res?.output ?? 'No output');
+    setLoading('');
+  };
+
+  const handleSubmit = async () => {
+    setLoading('submit'); setReview(''); setOutput('');
+    const res = await getVerdict({ code, id }, navigate);
+    setVerdict(res);
+    setLoading('');
+  };
+
+  const handleAIReview = async () => {
+    setLoading('ai'); setVerdict(null);
+    const res = await getAIReview({ code }, navigate);
+    setReview(res?.output ?? 'Could not get a review.');
+    setLoading('');
+  };
+
+  const verdictStyle = (v) => {
+    if (v === 'Accepted') return 'bg-green-500/15 border-green-500 text-green-300';
+    if (v === 'Wrong Answer') return 'bg-red-500/15 border-red-500 text-red-300';
+    if (v === 'Time Limit Exceeded') return 'bg-amber-500/15 border-amber-500 text-amber-300';
+    return 'bg-orange-500/15 border-orange-500 text-orange-300';
+  };
+
+  const btn = 'rounded-md px-4 py-2 font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed';
+
+  return (
+    <div className="w-full h-[80vh] flex gap-3 text-slate-200">
+      {/* LEFT: problem statement */}
+      <div className="w-1/2 h-full overflow-y-auto rounded-lg border border-slate-700 bg-slate-900 p-5">
+        <h1 className="text-2xl font-bold text-slate-100 mb-1">{problem?.name || 'Loading…'}</h1>
+        {problem?.difficulty && (
+          <span className="inline-block text-sm mb-4 px-2 py-0.5 rounded bg-slate-700 text-slate-200">
+            {problem.difficulty}
+          </span>
+        )}
+        <p className="whitespace-pre-wrap leading-relaxed text-slate-300">{problem?.statement}</p>
+
+        {sample && (
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold text-slate-100 mb-2">Sample Test Cases</h2>
+            <div className="space-y-2">
+              {sample.input.map((inp, i) => (
+                <div key={i} className="rounded-md bg-slate-800 border border-slate-700 p-3 text-sm">
+                  <div><span className="text-slate-400">Input:</span> <code className="text-slate-200">{inp}</code></div>
+                  <div><span className="text-slate-400">Output:</span> <code className="text-slate-200">{sample.output[i]}</code></div>
                 </div>
+              ))}
             </div>
-            {/* this additional div because m-5 was not working with h and w full, so have to use padding */}
+          </div>
+        )}
+      </div>
+
+      {/* RIGHT: editor + controls */}
+      <div className="w-1/2 h-full flex flex-col gap-3">
+        <div className="flex-1 rounded-lg overflow-hidden border border-slate-700">
+          <Editor
+            height="100%"
+            theme="vs-dark"
+            defaultLanguage="cpp"
+            value={code}
+            onChange={(v) => setCode(v ?? '')}
+            options={{ fontSize: 15, minimap: { enabled: false }, scrollBeyondLastLine: false }}
+          />
         </div>
-    )
-}
 
+        <div className="flex gap-2 items-center">
+          <button onClick={handleRun} disabled={!!loading} className={`${btn} bg-slate-600 hover:bg-slate-500`}>
+            {loading === 'run' ? 'Running…' : 'Run'}
+          </button>
+          <button onClick={handleSubmit} disabled={!!loading} className={`${btn} bg-indigo-600 hover:bg-indigo-500`}>
+            {loading === 'submit' ? 'Submitting…' : 'Submit'}
+          </button>
+          <button onClick={handleAIReview} disabled={!!loading} className={`${btn} bg-purple-600 hover:bg-purple-500`}>
+            {loading === 'ai' ? 'Reviewing…' : 'AI Review'}
+          </button>
+          <Link to="/Submissions" className={`${btn} bg-slate-700 hover:bg-slate-600 ml-auto`}>My Submissions</Link>
+        </div>
 
-export default Submit
+        {verdict && (
+          <div className={`rounded-md border px-4 py-3 font-semibold ${verdictStyle(verdict.verdict)}`}>
+            {verdict.verdict}{verdict.failedCase ? ` — failed on test case ${verdict.failedCase}` : ''}
+            {verdict.detail && (
+              <pre className="mt-2 text-xs font-mono whitespace-pre-wrap text-slate-300">{verdict.detail}</pre>
+            )}
+          </div>
+        )}
 
+        <div className="grid grid-cols-2 gap-3 h-44">
+          <div className="rounded-md border border-slate-700 bg-slate-900 p-2 flex flex-col">
+            <span className="text-xs text-slate-400 mb-1">Custom Input</span>
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Enter input…"
+              className="flex-1 resize-none bg-slate-950 text-slate-200 rounded p-2 text-sm font-mono outline-none"
+            />
+          </div>
+          <div className="rounded-md border border-slate-700 bg-slate-900 p-2 overflow-y-auto">
+            <span className="text-xs text-slate-400">{review ? 'AI Review' : 'Output'}</span>
+            {review ? (
+              <div className="md text-sm text-slate-200 mt-1"><Markdown>{review}</Markdown></div>
+            ) : (
+              <pre className="text-sm font-mono whitespace-pre-wrap text-slate-200 mt-1">{output || '// output will appear here'}</pre>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Submit;

@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Install GCC and other necessary build tools
-RUN apk update && apk add --no-cache g++ gcc
+RUN apk update && apk add --no-cache g++ gcc coreutils
 
 # Copy only the package.json and package-lock.json files and install dependencies.
 # This allows Docker to cache this layer when package files don't change.
