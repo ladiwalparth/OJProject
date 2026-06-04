@@ -243,10 +243,12 @@ async function handleExplainError(req, res) {
     return res.status(400).json({ output: "No error to explain — submit something that fails to compile or crashes first." });
   }
   try {
+    const shortDetail = detail.slice(0, 1500); // g++ errors are huge; the real cause is at the top
+
     const prompt = `A student's C++ submission produced this compiler/runtime error.
 
-ERROR:
-${detail}
+ERROR (may be truncated):
+${shortDetail}
 
 THEIR CODE:
 ${code}
