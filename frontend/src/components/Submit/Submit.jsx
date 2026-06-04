@@ -125,7 +125,7 @@ const Submit = () => {
 
       {/* RIGHT: editor + controls */}
       <div className="w-1/2 h-full flex flex-col gap-3">
-        <div className="flex-1 rounded-lg overflow-hidden border border-slate-700">
+        <div className="flex-1 min-h-0 rounded-lg overflow-hidden border border-slate-700">
           <Editor
             height="100%"
             theme="vs-dark"
@@ -166,8 +166,8 @@ const Submit = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-3 h-44">
-          <div className="rounded-md border border-slate-700 bg-slate-900 p-2 flex flex-col">
+        <div className="grid grid-cols-2 grid-rows-1 gap-3 h-44 shrink-0">
+          <div className="rounded-md border border-slate-700 bg-slate-900 p-2 flex flex-col min-h-0">
             <span className="text-xs text-slate-400 mb-1">Custom Input</span>
             <textarea
               value={input}
@@ -176,7 +176,7 @@ const Submit = () => {
               className="flex-1 resize-none bg-slate-950 text-slate-200 rounded p-2 text-sm font-mono outline-none"
             />
           </div>
-          <div className="rounded-md border border-slate-700 bg-slate-900 p-2 overflow-y-auto">
+          <div className="rounded-md border border-slate-700 bg-slate-900 p-2 overflow-y-auto min-h-0">
             <span className="text-xs text-slate-400">{review ? 'AI Output' : 'Output'}</span>
             {review ? (
               <div className="md text-sm text-slate-200 mt-1"><Markdown>{review}</Markdown></div>
