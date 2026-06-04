@@ -86,7 +86,7 @@ const getAIReview = async (data, navigate) => {
     return res.data; // { output }
   } catch (error) {
     if (error.response?.status === 401) { alert("Please Enter first"); navigate('/enter'); }
-    return { output: 'Could not get a review.' };
+    return error.response?.data || { output: 'Could not reach the AI service.' };
   }
 };
 
@@ -96,7 +96,7 @@ const getComplexityAnalysis = async (data, navigate) => {
     return res.data; // { output }
   } catch (error) {
     if (error.response?.status === 401) { alert("Please Enter first"); navigate('/enter'); }
-    return { output: 'Could not analyze complexity.' };
+    return error.response?.data || { output: 'Could not reach the AI service.' };
   }
 };
 
@@ -166,7 +166,7 @@ const getExplainError = async (data, navigate) => {
     return res.data; // { output }
   } catch (error) {
     if (error.response?.status === 401) { alert("Please Enter first"); navigate('/enter'); }
-    return { output: 'Could not explain the error.' };
+    return error.response?.data || { output: 'Could not reach the AI service.' };
   }
 };
 

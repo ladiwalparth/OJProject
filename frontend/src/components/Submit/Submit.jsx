@@ -75,7 +75,7 @@ const Submit = () => {
 
   const handleExplainError = async () => {
     setLoading('explain');
-    const detail = verdict?.detail || output || '';
+    const detail = verdict?.detail || '';
     const res = await getExplainError({ code, detail }, navigate);
     setReview(res?.output ?? 'Could not explain the error.');
     setLoading('');
@@ -89,6 +89,9 @@ const Submit = () => {
   };
 
   const btn = 'rounded-md px-4 py-2 font-semibold text-white transition disabled:opacity-50 disabled:cursor-not-allowed';
+
+  // Explain Error only makes sense when the last submit produced a compile/runtime error
+  const explainable = verdict?.verdict === 'Compilation Error' || verdict?.verdict === 'Runtime Error';
 
   return (
     <div className="w-full h-[80vh] flex gap-3 text-slate-200">
@@ -146,17 +149,19 @@ const Submit = () => {
           <button onClick={handleComplexity} disabled={!!loading} className={`${btn} bg-teal-600 hover:bg-teal-500`}>
             {loading === 'complexity' ? 'Analyzing…' : 'Analyze Complexity'}
           </button>
-          <button onClick={handleExplainError} disabled={!!loading} className={`${btn} bg-rose-600 hover:bg-rose-500`}>
+          <button onClick={handleExplainError} disabled={!!loading || !explainable} title={!explainable ? 'Submit code that fails to compile or crashes first' : ''} className={`${btn} bg-rose-600 hover:bg-rose-500`}>
             {loading === 'explain' ? 'Explaining…' : 'Explain Error'}
           </button>
           <Link to="/Submissions" className={`${btn} bg-slate-700 hover:bg-slate-600 ml-auto`}>My Submissions</Link>
         </div>
 
         {verdict && (
-          <div className={`rounded-md border px-4 py-3 font-semibold ${verdictStyle(verdict.verdict)}`}>
-            {verdict.verdict}{verdict.failedCase ? ` — failed on test case ${verdict.failedCase}` : ''}
+          <div className={`shrink-0 rounded-md border px-4 py-3 ${verdictStyle(verdict.verdict)}`}>
+            <div className="font-semibold">
+              {verdict.verdict}{verdict.failedCase ? ` — failed on test case ${verdict.failedCase}` : ''}
+            </div>
             {verdict.detail && (
-              <pre className="mt-2 text-xs font-mono whitespace-pre-wrap text-slate-300">{verdict.detail}</pre>
+              <pre className="mt-2 max-h-40 overflow-y-auto text-xs font-mono font-normal whitespace-pre-wrap text-slate-300">{verdict.detail}</pre>
             )}
           </div>
         )}
