@@ -124,8 +124,8 @@ const Submit = () => {
       </div>
 
       {/* RIGHT: editor + controls */}
-      <div className="w-1/2 h-full flex flex-col gap-3">
-        <div className="flex-1 min-h-0 rounded-lg overflow-hidden border border-slate-700">
+      <div className="w-1/2 h-full flex flex-col gap-3 overflow-y-auto pr-1">
+        <div className="flex-1 min-h-[260px] rounded-lg overflow-hidden border border-slate-700">
           <Editor
             height="100%"
             theme="vs-dark"
@@ -136,7 +136,7 @@ const Submit = () => {
           />
         </div>
 
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center shrink-0">
           <button onClick={handleRun} disabled={!!loading} className={`${btn} bg-slate-600 hover:bg-slate-500`}>
             {loading === 'run' ? 'Running…' : 'Run'}
           </button>
