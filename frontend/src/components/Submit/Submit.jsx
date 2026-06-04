@@ -11,8 +11,11 @@ const DEFAULT_CODE = `#include <bits/stdc++.h>
 using namespace std;
 
 int main() {
-    // read input, print each answer on its own line
-
+    int t;
+    cin >> t;
+    while (t--) {
+        // read this test case and print its answer
+    }
     return 0;
 }`;
 
@@ -27,7 +30,7 @@ const Submit = () => {
   const [output, setOutput] = useState('');
   const [review, setReview] = useState('');
   const [verdict, setVerdict] = useState(null);   // { verdict, failedCase?, detail? }
-  const [loading, setLoading] = useState('');     // 'run' | 'submit' | 'ai' | ''
+  const [loading, setLoading] = useState('');     // 'run' | 'submit' | 'ai' | 'complexity' | 'explain' | ''
 
   useEffect(() => {
     (async () => {
@@ -53,30 +56,30 @@ const Submit = () => {
   };
 
   const handleAIReview = async () => {
-  setLoading('ai');
-  const v = verdict; // last submit result, may be null if they haven't submitted yet
-  const res = await getAIReview(
-    { code, id, verdict: v?.verdict, failedCase: v?.failedCase },
-    navigate
-  );
-  setReview(res?.output ?? 'Could not get a review.');
-  setLoading('');
-};
+    setLoading('ai');
+    const v = verdict; // last submit result, may be null if they haven't submitted yet
+    const res = await getAIReview(
+      { code, id, verdict: v?.verdict, failedCase: v?.failedCase },
+      navigate
+    );
+    setReview(res?.output ?? 'Could not get a review.');
+    setLoading('');
+  };
 
-const handleComplexity = async () => {
-  setLoading('complexity');
-  const res = await getComplexityAnalysis({ code, id }, navigate);
-  setReview(res?.output ?? 'Could not analyze complexity.');
-  setLoading('');
-};
+  const handleComplexity = async () => {
+    setLoading('complexity');
+    const res = await getComplexityAnalysis({ code, id }, navigate);
+    setReview(res?.output ?? 'Could not analyze complexity.');
+    setLoading('');
+  };
 
   const handleExplainError = async () => {
-  setLoading('explain');
-  const detail = verdict?.detail || output || '';
-  const res = await getExplainError({ code, detail }, navigate);
-  setReview(res?.output ?? 'Could not explain the error.');
-  setLoading('');
-};
+    setLoading('explain');
+    const detail = verdict?.detail || output || '';
+    const res = await getExplainError({ code, detail }, navigate);
+    setReview(res?.output ?? 'Could not explain the error.');
+    setLoading('');
+  };
 
   const verdictStyle = (v) => {
     if (v === 'Accepted') return 'bg-green-500/15 border-green-500 text-green-300';
@@ -99,17 +102,20 @@ const handleComplexity = async () => {
         )}
         <p className="whitespace-pre-wrap leading-relaxed text-slate-300">{problem?.statement}</p>
 
-        {sample && (
+        {sample?.input && (
           <div className="mt-6">
-            <h2 className="text-lg font-semibold text-slate-100 mb-2">Sample Test Cases</h2>
-            <div className="space-y-2">
-              {sample.input.map((inp, i) => (
-                <div key={i} className="rounded-md bg-slate-800 border border-slate-700 p-3 text-sm">
-                  <div><span className="text-slate-400">Input:</span> <code className="text-slate-200">{inp}</code></div>
-                  <div><span className="text-slate-400">Output:</span> <code className="text-slate-200">{sample.output[i]}</code></div>
-                </div>
-              ))}
+            <h2 className="text-lg font-semibold text-slate-100 mb-2">Sample</h2>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="rounded-md bg-slate-800 border border-slate-700 p-3">
+                <div className="text-xs text-slate-400 mb-1">Input</div>
+                <pre className="text-sm font-mono whitespace-pre-wrap text-slate-200">{sample.input.join('\n')}</pre>
+              </div>
+              <div className="rounded-md bg-slate-800 border border-slate-700 p-3">
+                <div className="text-xs text-slate-400 mb-1">Output</div>
+                <pre className="text-sm font-mono whitespace-pre-wrap text-slate-200">{sample.output.join('\n')}</pre>
+              </div>
             </div>
+            <p className="text-xs text-slate-500 mt-2">The first line of input is the number of test cases.</p>
           </div>
         )}
       </div>
@@ -127,7 +133,7 @@ const handleComplexity = async () => {
           />
         </div>
 
-        <div className="flex gap-2 items-center">
+        <div className="flex flex-wrap gap-2 items-center">
           <button onClick={handleRun} disabled={!!loading} className={`${btn} bg-slate-600 hover:bg-slate-500`}>
             {loading === 'run' ? 'Running…' : 'Run'}
           </button>
@@ -137,7 +143,7 @@ const handleComplexity = async () => {
           <button onClick={handleAIReview} disabled={!!loading} className={`${btn} bg-purple-600 hover:bg-purple-500`}>
             {loading === 'ai' ? 'Reviewing…' : 'AI Review'}
           </button>
-          <button onClick={handleComplexity} disabled={!!loading} className={`${btn} bg-indigo-600 hover:bg-indigo-500`}>
+          <button onClick={handleComplexity} disabled={!!loading} className={`${btn} bg-teal-600 hover:bg-teal-500`}>
             {loading === 'complexity' ? 'Analyzing…' : 'Analyze Complexity'}
           </button>
           <button onClick={handleExplainError} disabled={!!loading} className={`${btn} bg-rose-600 hover:bg-rose-500`}>
@@ -166,7 +172,7 @@ const handleComplexity = async () => {
             />
           </div>
           <div className="rounded-md border border-slate-700 bg-slate-900 p-2 overflow-y-auto">
-            <span className="text-xs text-slate-400">{review ? 'AI Review' : 'Output'}</span>
+            <span className="text-xs text-slate-400">{review ? 'AI Output' : 'Output'}</span>
             {review ? (
               <div className="md text-sm text-slate-200 mt-1"><Markdown>{review}</Markdown></div>
             ) : (

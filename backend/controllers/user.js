@@ -8,8 +8,25 @@ import { Submission } from "../models/submission.js";
 import bcrypt from "bcryptjs";
 import { setUser, getUser } from "../service/auth.js";
 import axios from 'axios';
-import { GoogleGenAI } from "@google/genai";
 import 'dotenv/config';
+
+// ---- AI provider: Groq (free, OpenAI-compatible). Uses axios, no extra package. ----
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
+const GROQ_MODEL = "llama-3.3-70b-versatile"; // switch to "llama-3.1-8b-instant" if you hit rate limits
+
+async function askAI(prompt) {
+  const r = await axios.post(
+    GROQ_URL,
+    {
+      model: GROQ_MODEL,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.4,
+      max_tokens: 800,
+    },
+    { headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` } }
+  );
+  return r.data?.choices?.[0]?.message?.content ?? "";
+}
 
 
 async function handleUserRegister(req, res) {
@@ -185,15 +202,12 @@ STRICT RULES:
 - If the verdict is Accepted (or absent), instead suggest ONE improvement (clarity or efficiency).
 Respond in markdown.`;
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-    });
-    return res.status(200).json({ output: response.text });
+    const output = await askAI(prompt);
+    return res.status(200).json({ output });
   } catch (error) {
-    console.log("AI review error:", error?.message);
-    return res.status(500).json({ output: 'Error generating review.' });
+    const msg = error?.response?.data?.error?.message || error?.message || 'unknown';
+    console.log("AI review error:", msg);
+    return res.status(500).json({ output: 'AI error: ' + msg });
   }
 }
 
@@ -214,15 +228,12 @@ Respond in markdown with exactly these three bullet points:
 - **One optimization:** a single concrete suggestion
 Keep it under 6 lines. Do NOT rewrite the full solution.`;
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-    });
-    return res.status(200).json({ output: response.text });
+    const output = await askAI(prompt);
+    return res.status(200).json({ output });
   } catch (error) {
-    console.log("complexity error:", error?.message);
-    return res.status(500).json({ output: 'Error analyzing complexity.' });
+    const msg = error?.response?.data?.error?.message || error?.message || 'unknown';
+    console.log("complexity error:", msg);
+    return res.status(500).json({ output: 'AI error: ' + msg });
   }
 }
 
@@ -246,15 +257,12 @@ Explain in markdown as 2-4 short numbered points:
 3. How to fix it conceptually.
 Do NOT rewrite the full corrected program — point them to the fix.`;
 
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-    const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-    });
-    return res.status(200).json({ output: response.text });
+    const output = await askAI(prompt);
+    return res.status(200).json({ output });
   } catch (error) {
-    console.log("explain error:", error?.message);
-    return res.status(500).json({ output: 'AI error: ' + (error?.message || 'unknown') });
+    const msg = error?.response?.data?.error?.message || error?.message || 'unknown';
+    console.log("explain error:", msg);
+    return res.status(500).json({ output: 'AI error: ' + msg });
   }
 }
 

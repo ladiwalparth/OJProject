@@ -99,6 +99,7 @@ const getComplexityAnalysis = async (data, navigate) => {
     return { output: 'Could not analyze complexity.' };
   }
 };
+
 const getProblems = async (navigate) => {
     try {
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/getProblems`, {
@@ -156,8 +157,6 @@ const getParticularTestCase = async (code) => {
         }
     } catch (error) {
         console.log(error);
-        alert("Error while fetching problem");
-        navigate('/');
     }
 }
 
@@ -172,4 +171,4 @@ const getExplainError = async (data, navigate) => {
 };
 
 
-export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getAIReview, getProblems, getSubmissions, getParticularProblem, getParticularTestCase, getExplainError };
+export { uploadData, enterData, loggedInUser, logoutUser, getOutput, getVerdict, getAIReview, getComplexityAnalysis, getProblems, getSubmissions, getParticularProblem, getParticularTestCase, getExplainError };
